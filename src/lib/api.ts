@@ -55,14 +55,19 @@ async function get<T>(path: string, revalidate = 60): Promise<T | null> {
 
 const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1'])
 
-/** Loja do dominio visitado; sem loja, a pagina de "nao encontrada". */
-export async function getStore(): Promise<Store> {
+/** Loja do dominio visitado, ou null se nao houver loja ativa para ele. */
+export async function findStore(): Promise<Store | null> {
   const h = await headers()
   const host = (h.get('x-forwarded-host') ?? h.get('host') ?? '').split(':')[0].toLowerCase()
   const padrao = process.env.DEFAULT_STORE_SLUG
-  const loja = LOCAL_HOSTS.has(host) && padrao
-    ? await get<Store>(encodeURIComponent(padrao))
-    : await get<Store>(`by-domain/${encodeURIComponent(host)}`)
+  return LOCAL_HOSTS.has(host) && padrao
+    ? get<Store>(encodeURIComponent(padrao))
+    : get<Store>(`by-domain/${encodeURIComponent(host)}`)
+}
+
+/** Loja do dominio visitado; sem loja, a pagina de "nao encontrada". */
+export async function getStore(): Promise<Store> {
+  const loja = await findStore()
   if (!loja) notFound()
   return loja
 }

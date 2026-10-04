@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
 import type { CSSProperties, ReactNode } from 'react'
-import { getStore } from '@/lib/api'
+import { findStore } from '@/lib/api'
 import { CartProvider } from '@/lib/cart'
 import { Header } from '@/components/header'
 import './globals.css'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const store = await getStore()
+  const store = await findStore()
+  if (!store) return { title: 'Loja não encontrada' }
   return {
     title: { default: store.name, template: `%s | ${store.name}` },
     description: store.tagline || `Peças para o seu carro na ${store.name}.`,
@@ -14,7 +15,20 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
-  const store = await getStore()
+  const store = await findStore()
+  // Sem loja ativa para este endereco: mensagem simples (e nunca uma tela em branco).
+  if (!store) {
+    return (
+      <html lang="pt-BR">
+        <body>
+          <main className="wrap sec">
+            <h1 className="h2">Loja não encontrada</h1>
+            <p className="muted">Este endereço não tem uma loja ativa no momento.</p>
+          </main>
+        </body>
+      </html>
+    )
+  }
   // A cor vem do ERP ja validada (#RRGGBB); aqui confere de novo antes de virar estilo.
   const brand = /^#[0-9a-f]{6}$/i.test(store.primary_color) ? store.primary_color : '#111111'
   return (
