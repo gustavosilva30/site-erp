@@ -7,6 +7,13 @@ import { notFound } from 'next/navigation'
  */
 const ERP = (process.env.ERP_API_URL ?? 'http://localhost:3001').replace(/\/$/, '')
 
+export interface Banner {
+  id: string
+  image_url: string
+  alt: string
+  link_url: string | null
+}
+
 export interface Store {
   slug: string
   name: string
@@ -20,6 +27,7 @@ export interface Store {
   hours: string
   instagram: string
   primary_color: string
+  banners?: Banner[]
 }
 
 export interface ProductCard {

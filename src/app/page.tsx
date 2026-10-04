@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { getStore, listCategories, listProducts } from '@/lib/api'
 import { whatsappLink } from '@/lib/format'
 import { ProductCardView } from '@/components/product-card'
+import { Carousel } from '@/components/carousel'
 
 export default async function Home() {
   const store = await getStore()
@@ -13,6 +14,8 @@ export default async function Home() {
 
   return (
     <main>
+      <Carousel banners={store.banners ?? []} />
+
       <section className="hero">
         <div className="wrap">
           <div className="hero-text">
