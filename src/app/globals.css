@@ -100,16 +100,17 @@ button, input { font: inherit; }
   .search { order: 5; flex-basis: 100%; }
 }
 
-.carousel { position: relative; max-width: 1120px; margin: 16px auto 0; padding: 0 20px; }
-.carousel-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; border-radius: var(--radius); background: var(--soft); }
+.hero-art.has-carousel { padding: 0; aspect-ratio: 3 / 2; align-items: stretch; background: transparent; }
+.carousel { position: relative; width: 100%; height: 100%; }
+.carousel-track { display: flex; height: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; background: var(--soft); }
 .carousel-track::-webkit-scrollbar { display: none; }
-.carousel-slide { flex: 0 0 100%; scroll-snap-align: start; aspect-ratio: 8 / 3; }
+.carousel-slide { flex: 0 0 100%; scroll-snap-align: start; height: 100%; }
 .carousel-slide a { display: block; height: 100%; }
 .carousel-slide img { width: 100%; height: 100%; object-fit: cover; user-select: none; }
-.carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 38px; height: 38px; border-radius: 50%; border: 0; background: rgba(255,255,255,.88); color: var(--ink); font-size: 24px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.carousel-btn.prev { left: 32px; }
-.carousel-btn.next { right: 32px; }
+.carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; border-radius: 50%; border: 0; background: rgba(255,255,255,.88); color: var(--ink); font-size: 24px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.carousel-btn.prev { left: 12px; }
+.carousel-btn.next { right: 12px; }
 .carousel-dots { position: absolute; left: 0; right: 0; bottom: 12px; display: flex; gap: 6px; justify-content: center; }
 .carousel-dots button { width: 9px; height: 9px; border-radius: 50%; border: 0; padding: 0; background: rgba(255,255,255,.6); cursor: pointer; }
 .carousel-dots button.on { background: #fff; width: 22px; border-radius: 999px; }
-@media (max-width: 760px) { .carousel { padding: 0; margin-top: 0; } .carousel-track { border-radius: 0; } .carousel-btn { display: none; } }
+@media (max-width: 760px) { .hero-art.has-carousel { min-height: 0; } .carousel-btn { display: none; } }

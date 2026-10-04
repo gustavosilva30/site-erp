@@ -14,8 +14,6 @@ export default async function Home() {
 
   return (
     <main>
-      <Carousel banners={store.banners ?? []} />
-
       <section className="hero">
         <div className="wrap">
           <div className="hero-text">
@@ -31,7 +29,9 @@ export default async function Home() {
               <button className="btn" type="submit">Ver peças</button>
             </form>
           </div>
-          <div className="hero-art">{store.address || store.name}</div>
+          <div className={`hero-art${store.banners?.length ? ' has-carousel' : ''}`}>
+            {store.banners?.length ? <Carousel banners={store.banners} /> : (store.address || store.name)}
+          </div>
         </div>
       </section>
 
