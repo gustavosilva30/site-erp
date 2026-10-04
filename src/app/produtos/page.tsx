@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { getStore, listCategories, listProducts } from '@/lib/api'
+import { capitalize } from '@/lib/format'
 import { ProductCardView } from '@/components/product-card'
 
 export const metadata: Metadata = { title: 'Peças' }
@@ -31,11 +32,11 @@ export default async function Produtos({ searchParams }: { searchParams: Promise
 
   return (
     <main className="wrap sec">
-      <h1 className="h2">{q ? `Resultados para "${q}"` : sp.category ?? 'Todas as peças'} <span className="muted small">({result.total})</span></h1>
+      <h1 className="h2">{q ? `Resultados para "${q}"` : capitalize(sp.category) || 'Todas as peças'} <span className="muted small">({result.total})</span></h1>
       <div className="filters">
         <Link href={href(1, '')} className={`chip${!sp.category ? ' on' : ''}`}>Todas</Link>
         {categories.slice(0, 20).map((c) => (
-          <Link key={c.name} href={href(1, c.name)} className={`chip${sp.category === c.name ? ' on' : ''}`}>{c.name}</Link>
+          <Link key={c.name} href={href(1, c.name)} className={`chip${sp.category === c.name ? ' on' : ''}`}>{capitalize(c.name)}</Link>
         ))}
       </div>
       {result.products.length === 0

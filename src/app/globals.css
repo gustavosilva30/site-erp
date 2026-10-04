@@ -31,7 +31,7 @@ button, input { font: inherit; }
 .top { border-bottom: 1px solid var(--line); background: #fff; position: sticky; top: 0; z-index: 10; }
 .top .wrap { padding-top: 12px; padding-bottom: 12px; }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; }
-.brand img { height: 36px; width: auto; }
+.brand img { height: 56px; width: auto; max-width: 220px; object-fit: contain; }
 .logo-fallback { width: 36px; height: 36px; border-radius: 8px; background: var(--brand); color: #fff; display: flex; align-items: center; justify-content: center; }
 .search { display: flex; flex: 1; background: var(--soft); border-radius: 999px; padding: 4px 4px 4px 16px; }
 .search input { flex: 1; border: 0; background: transparent; outline: none; min-width: 0; }
@@ -114,3 +114,8 @@ button, input { font: inherit; }
 .carousel-dots button { width: 9px; height: 9px; border-radius: 50%; border: 0; padding: 0; background: rgba(255,255,255,.6); cursor: pointer; }
 .carousel-dots button.on { background: #fff; width: 22px; border-radius: 999px; }
 @media (max-width: 760px) { .hero-art.has-carousel { min-height: 0; } .carousel-btn { display: none; } }
+
+/* Títulos de produto sempre em maiúsculas, em qualquer tela. */
+.card .t, .detail h1, .cartrow .title { text-transform: uppercase; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }

@@ -28,7 +28,7 @@ export function CartView({ storeName, whatsapp }: { storeName: string; whatsapp:
         <div className="cartrow" key={i.id}>
           <div className="ph">{i.photo && <img src={i.photo} alt="" />}</div>
           <div>
-            <div>{i.title}</div>
+            <div className="title">{i.title}</div>
             <div className="qty">
               <button type="button" aria-label="Diminuir" onClick={() => setQty(i.id, i.qty - 1)}>-</button>
               <span>{i.qty}</span>

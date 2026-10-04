@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { getStore, listCategories, listProducts } from '@/lib/api'
-import { whatsappLink } from '@/lib/format'
+import { capitalize, whatsappLink } from '@/lib/format'
 import { ProductCardView } from '@/components/product-card'
 import { Carousel } from '@/components/carousel'
 
@@ -42,7 +42,7 @@ export default async function Home() {
             <div className="cats">
               {categories.slice(0, 8).map((c) => (
                 <Link key={c.name} href={`/produtos?category=${encodeURIComponent(c.name)}`} className="cat">
-                  <div className="ph">{c.name}</div>
+                  <div className="ph">{capitalize(c.name)}</div>
                   <div className="n">{c.total} {c.total === 1 ? 'peça' : 'peças'}</div>
                 </Link>
               ))}

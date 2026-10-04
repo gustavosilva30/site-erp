@@ -7,3 +7,9 @@ export const whatsappLink = (number: string | null, text: string) =>
 
 export const years = (p: { year_start: number | null; year_end: number | null }) =>
   p.year_start ? (p.year_end && p.year_end !== p.year_start ? `${p.year_start}-${p.year_end}` : String(p.year_start)) : ''
+
+/** Nome de categoria para exibir: tudo minúsculo e só a primeira letra maiúscula ("MOTOR DE ARRANQUE" -> "Motor de arranque"). */
+export const capitalize = (text: string | null | undefined) => {
+  const t = (text ?? '').trim().toLocaleLowerCase('pt-BR')
+  return t ? t.charAt(0).toLocaleUpperCase('pt-BR') + t.slice(1) : ''
+}

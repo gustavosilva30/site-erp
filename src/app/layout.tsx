@@ -11,6 +11,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: { default: store.name, template: `%s | ${store.name}` },
     description: store.tagline || `Peças para o seu carro na ${store.name}.`,
+    // O ícone da aba é a logo que a empresa enviou nas configurações.
+    ...(store.logo_url ? { icons: { icon: store.logo_url } } : {}),
   }
 }
 
