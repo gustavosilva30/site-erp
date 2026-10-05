@@ -3,6 +3,10 @@ import type { NextConfig } from 'next'
 const config: NextConfig = {
   poweredByHeader: false,
   output: 'standalone',
+  async redirects() {
+    // www.dominio -> dominio: um só endereço por loja (o Google trata www e sem www como sites diferentes).
+    return [{ source: '/:path*', has: [{ type: 'host', value: 'www.(?<dominio>.+)' }], destination: 'https://:dominio/:path*', permanent: true }]
+  },
   async headers() {
     return [
       {

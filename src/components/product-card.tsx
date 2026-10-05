@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { ProductCard as Product } from '@/lib/api'
 import { mensagemConsulta, money, semPreco, whatsappLink } from '@/lib/format'
+import { pecaPath } from '@/lib/slug'
 import { AddToCart } from './add-to-cart'
 
 export function ProductCardView({ product, whatsapp, storeName }: { product: Product; whatsapp: string | null; storeName: string }) {
@@ -9,9 +10,9 @@ export function ProductCardView({ product, whatsapp, storeName }: { product: Pro
   const link = consulta ? whatsappLink(whatsapp, mensagemConsulta(storeName, product)) : null
   return (
     <div className="card">
-      <Link href={`/produto/${encodeURIComponent(product.id)}`}>
+      <Link href={pecaPath(product)}>
         <div className="ph">
-          {product.photo ? <img src={product.photo} alt={product.title} loading="lazy" /> : 'Sem foto'}
+          {product.photo ? <img src={product.photo} alt={product.title} loading="lazy" decoding="async" /> : 'Sem foto'}
         </div>
         <div className="t">{product.title}</div>
         {meta && <div className="m">{meta}</div>}
@@ -22,7 +23,7 @@ export function ProductCardView({ product, whatsapp, storeName }: { product: Pro
             <span className="price" style={{ fontSize: '.95rem' }}>Consulte a loja</span>
             {link
               ? <a className="btn sm wa" href={link} target="_blank" rel="noopener noreferrer">Consultar</a>
-              : <Link className="btn sm" href={`/produto/${encodeURIComponent(product.id)}`}>Ver peça</Link>}
+              : <Link className="btn sm" href={pecaPath(product)}>Ver peça</Link>}
           </>
         ) : (
           <>

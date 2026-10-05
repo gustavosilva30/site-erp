@@ -145,3 +145,25 @@ button, input { font: inherit; }
 .policy p { margin: 0 0 12px; white-space: pre-line; }
 .policy ul { margin: 0 0 12px; padding-left: 20px; }
 .policy li { margin: 4px 0; }
+
+
+/* ---- Filtro por carro, galeria, SEO, sucatas ---- */
+.finder select, .finder input { padding: 10px 12px; border: 1px solid var(--line, #d8d8d8); border-radius: 10px; background: #fff; color: inherit; font: inherit; min-width: 0; }
+.finder .fields { display: grid; grid-template-columns: 1fr 1fr 90px; gap: 8px; }
+.finder.compact { margin: 0 0 14px; padding: 12px; border: 1px solid var(--line, #e3e3e3); border-radius: 12px; background: #fff; color: var(--text, #111); display: grid; gap: 8px; }
+@media (max-width: 560px) { .finder .fields { grid-template-columns: 1fr 1fr; } .finder .fields input { grid-column: 1 / -1; } }
+.crumbs { font-size: .85rem; color: var(--muted, #666); margin: 14px 0 6px; }
+.crumbs a { color: inherit; text-decoration: underline; }
+.thumbs button { padding: 0; border: 2px solid transparent; border-radius: 8px; background: none; cursor: pointer; overflow: hidden; }
+.thumbs button.on { border-color: var(--brand); }
+.thumbs button { width: 72px; height: 54px; }
+.thumbs button img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.trust { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 14px; padding: 0; margin: 14px 0; font-size: .9rem; }
+.trust a { color: inherit; text-decoration: underline; }
+.compat { padding-left: 18px; margin: 6px 0 14px; }
+.stickybar { display: none; }
+@media (max-width: 760px) {
+  .has-sticky { padding-bottom: 84px; }
+  .stickybar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; background: #fff; border-top: 1px solid var(--line, #ddd); box-shadow: 0 -4px 14px rgba(0,0,0,.08); }
+}
+.specs th { text-align: left; font-weight: 400; color: var(--muted); width: 38%; padding: 6px 14px 6px 0; vertical-align: top; }

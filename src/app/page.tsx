@@ -1,14 +1,20 @@
 import Link from 'next/link'
-import { getStore, listCategories, listProducts } from '@/lib/api'
+import { getFacets, getStore, listCategories, listProducts, listSucatas } from '@/lib/api'
 import { capitalize, whatsappLink } from '@/lib/format'
+import { categoriaPath, marcaPath } from '@/lib/slug'
+import { cidadeDe } from '@/lib/seo'
 import { ProductCardView } from '@/components/product-card'
+import { SucataCardView } from '@/components/sucata-card'
+import { CarFilter } from '@/components/car-filter'
 import { Carousel } from '@/components/carousel'
 
 export default async function Home() {
   const store = await getStore()
-  const [categories, destaques] = await Promise.all([
+  const [categories, destaques, facets, sucatas] = await Promise.all([
     listCategories(store.slug),
     listProducts(store.slug, { limit: 6 }),
+    getFacets(store.slug),
+    store.has_sucatas ? listSucatas(store.slug, 1, 3) : Promise.resolve(null),
   ])
   const wa = whatsappLink(store.whatsapp, store.whatsapp_message)
 
@@ -20,14 +26,7 @@ export default async function Home() {
             {store.tagline && <div className="small" style={{ opacity: .7, letterSpacing: 1 }}>{store.tagline.toUpperCase()}</div>}
             <h1>{store.hero_title}</h1>
             {store.hero_subtitle && <p style={{ opacity: .8, marginTop: -6 }}>{store.hero_subtitle}</p>}
-            <form action="/produtos" className="finder">
-              <b>Qual é o seu carro?</b>
-              <div className="fields">
-                <input name="marca" placeholder="Marca (ex.: Fiat)" maxLength={30} aria-label="Marca" />
-                <input name="modelo" placeholder="Modelo (ex.: Palio)" maxLength={30} aria-label="Modelo" />
-              </div>
-              <button className="btn" type="submit">Ver peças</button>
-            </form>
+            <CarFilter facets={facets} />
           </div>
           <div className={`hero-art${store.banners?.length ? ' has-carousel' : ''}`}>
             {store.banners?.length ? <Carousel banners={store.banners} /> : (store.address || store.name)}
@@ -41,7 +40,7 @@ export default async function Home() {
             <h2 className="h2">Categorias</h2>
             <div className="cats">
               {categories.slice(0, 8).map((c) => (
-                <Link key={c.name} href={`/produtos?category=${encodeURIComponent(c.name)}`} className="cat">
+                <Link key={c.name} href={categoriaPath(c.name)} className="cat">
                   <div className="ph">{capitalize(c.name)}</div>
                   <div className="n">{c.total} {c.total === 1 ? 'peça' : 'peças'}</div>
                 </Link>
@@ -60,6 +59,28 @@ export default async function Home() {
           <p style={{ marginTop: 18 }}><Link href="/produtos" className="btn ghost">Ver todas as peças</Link></p>
         </div>
       </section>
+
+      {sucatas && sucatas.sucatas.length > 0 && (
+        <section className="sec">
+          <div className="wrap">
+            <h2 className="h2">Carros em desmanche</h2>
+            <p className="muted">Veja os veículos que temos e as peças de cada um.</p>
+            <div className="grid">{sucatas.sucatas.map((s) => <SucataCardView key={s.id} sucata={s} />)}</div>
+            <p style={{ marginTop: 18 }}><Link href="/sucatas" className="btn ghost">Ver todas as sucatas</Link></p>
+          </div>
+        </section>
+      )}
+
+      {facets.montadoras.length > 0 && (
+        <section className="sec soft">
+          <div className="wrap">
+            <h2 className="h2">Peças por marca{store.city ? ` em ${cidadeDe(store)}` : ''}</h2>
+            <div className="filters">
+              {facets.montadoras.slice(0, 16).map((m) => <Link key={m.name} href={marcaPath(m.name)} className="chip">{m.name}</Link>)}
+            </div>
+          </div>
+        </section>
+      )}
 
       {wa && (
         <section className="cta">

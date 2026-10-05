@@ -26,6 +26,7 @@ export function Header({ store }: { store: Store }) {
         <nav className="nav" aria-label="Principal">
           <Link href="/">Início</Link>
           <Link href="/produtos">Peças</Link>
+          {store.has_sucatas && <Link href="/sucatas">Sucatas</Link>}
         </nav>
       </div>
     </header>

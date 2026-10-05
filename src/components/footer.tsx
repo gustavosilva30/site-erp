@@ -30,6 +30,7 @@ export function Footer({ store }: { store: Store }) {
             {store.tagline && <p className="muted small">{store.tagline}</p>}
             <ul className="foot-list">
               {wa && <li><a href={wa} target="_blank" rel="noopener noreferrer">WhatsApp</a></li>}
+              {store.google_reviews_url && <li><a href={store.google_reviews_url} target="_blank" rel="noopener noreferrer">Ver avaliações no Google</a></li>}
               {store.instagram && instagramOk(store.instagram) && <li><a href={`https://www.instagram.com/${store.instagram}`} target="_blank" rel="noopener noreferrer">Instagram @{store.instagram}</a></li>}
             </ul>
           </div>

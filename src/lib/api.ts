@@ -33,6 +33,13 @@ export interface Store {
   /** Quais textos legais a empresa preencheu (a chave é a da URL). */
   policies?: Record<string, boolean>
   banners?: Banner[]
+  city: string | null
+  state: string | null
+  /** Código do Google Search Console e link das avaliações (opcionais, definidos pela empresa). */
+  google_verification: string | null
+  google_reviews_url: string | null
+  /** A empresa colocou alguma sucata no site. */
+  has_sucatas: boolean
 }
 
 export interface ProductCard {
@@ -57,6 +64,40 @@ export interface ProductDetail extends ProductCard {
   warranty_days: number | null
   photos: string[]
   in_stock: boolean
+  updated_at: string | null
+  related: ProductCard[]
+  compatibility: { brand: string | null; model: string; year_start: number | null; year_end: number | null; engine: string | null }[]
+  /** Sucata de origem da peça, quando a empresa a colocou no site. */
+  sucata: { id: string; title: string } | null
+}
+
+export interface SucataCard {
+  id: string
+  title: string
+  brand: string | null
+  model: string | null
+  year: string
+  color: string | null
+  fuel: string | null
+  engine: string | null
+  photo: string | null
+  parts_count: number
+  updated_at: string | null
+}
+
+export interface SucataDetail extends SucataCard {
+  photos: string[]
+  parts: ProductCard[]
+}
+
+export interface Facets {
+  montadoras: { name: string; total: number }[]
+  models: { montadora: string; name: string; total: number }[]
+}
+
+export interface SitemapData {
+  products: { id: string; title: string; updated_at: string | null }[]
+  sucatas: { id: string; title: string; updated_at: string | null }[]
 }
 
 async function get<T>(path: string, revalidate = 60): Promise<T | null> {
@@ -85,10 +126,13 @@ export async function getStore(): Promise<Store> {
   return loja
 }
 
-export async function listProducts(slug: string, params: { q?: string; category?: string; page?: number; limit?: number }) {
+export async function listProducts(slug: string, params: { q?: string; category?: string; montadora?: string; model?: string; year?: string; page?: number; limit?: number }) {
   const qs = new URLSearchParams()
   if (params.q) qs.set('q', params.q)
   if (params.category) qs.set('category', params.category)
+  if (params.montadora) qs.set('montadora', params.montadora)
+  if (params.model) qs.set('model', params.model)
+  if (params.year) qs.set('year', params.year)
   qs.set('page', String(params.page ?? 1))
   qs.set('limit', String(params.limit ?? 24))
   const r = await get<{ products: ProductCard[]; total: number; page: number; limit: number }>(`${encodeURIComponent(slug)}/products?${qs}`, 30)
@@ -102,6 +146,23 @@ export async function listCategories(slug: string) {
 
 export async function getProduct(slug: string, id: string) {
   return get<ProductDetail>(`${encodeURIComponent(slug)}/products/${encodeURIComponent(id)}`, 30)
+}
+
+export async function getFacets(slug: string): Promise<Facets> {
+  return (await get<Facets>(`${encodeURIComponent(slug)}/facets`, 120)) ?? { montadoras: [], models: [] }
+}
+
+export async function listSucatas(slug: string, page = 1, limit = 24) {
+  const r = await get<{ sucatas: SucataCard[]; total: number; page: number; limit: number }>(`${encodeURIComponent(slug)}/sucatas?page=${page}&limit=${limit}`, 60)
+  return r ?? { sucatas: [], total: 0, page: 1, limit }
+}
+
+export async function getSucata(slug: string, id: string) {
+  return get<SucataDetail>(`${encodeURIComponent(slug)}/sucatas/${encodeURIComponent(id)}`, 60)
+}
+
+export async function getSitemapData(slug: string): Promise<SitemapData> {
+  return (await get<SitemapData>(`${encodeURIComponent(slug)}/sitemap`, 300)) ?? { products: [], sucatas: [] }
 }
 
 export async function getPolicy(slug: string, key: string) {
