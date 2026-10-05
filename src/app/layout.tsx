@@ -2,7 +2,10 @@ import type { Metadata } from 'next'
 import type { CSSProperties, ReactNode } from 'react'
 import { findStore } from '@/lib/api'
 import { CartProvider } from '@/lib/cart'
+import { ConsentProvider } from '@/lib/consent'
 import { Header } from '@/components/header'
+import { Footer } from '@/components/footer'
+import { CookieBanner } from '@/components/cookie-banner'
 import './globals.css'
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -36,16 +39,14 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   return (
     <html lang="pt-BR">
       <body style={{ '--brand': brand } as CSSProperties}>
-        <CartProvider>
-          <Header store={store} />
-          {children}
-          <footer className="foot">
-            <div className="wrap">
-              <span>{[store.name, store.address, store.hours].filter(Boolean).join(' · ')}</span>
-              <span>Loja criada com Desmonte360</span>
-            </div>
-          </footer>
-        </CartProvider>
+        <ConsentProvider>
+          <CartProvider>
+            <Header store={store} />
+            {children}
+            <Footer store={store} />
+          </CartProvider>
+          <CookieBanner hasCookiePolicy={Boolean(store.policies?.cookies)} hasPrivacyPolicy={Boolean(store.policies?.privacidade)} />
+        </ConsentProvider>
       </body>
     </html>
   )

@@ -28,10 +28,10 @@ button, input { font: inherit; }
 .btn.sm { padding: 6px 14px; font-size: 13px; }
 .btn:disabled { opacity: .5; cursor: default; }
 
-.top { border-bottom: 1px solid var(--line); background: #fff; position: sticky; top: 0; z-index: 10; }
+.top { border-bottom: 1px solid var(--line); background: #fff; }
 .top .wrap { padding-top: 12px; padding-bottom: 12px; }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; }
-.brand img { height: 56px; width: auto; max-width: 220px; object-fit: contain; }
+.brand img { height: 88px; width: auto; max-width: 320px; object-fit: contain; }
 .logo-fallback { width: 36px; height: 36px; border-radius: 8px; background: var(--brand); color: #fff; display: flex; align-items: center; justify-content: center; }
 .search { display: flex; flex: 1; background: var(--soft); border-radius: 999px; padding: 4px 4px 4px 16px; }
 .search input { flex: 1; border: 0; background: transparent; outline: none; min-width: 0; }
@@ -66,8 +66,6 @@ button, input { font: inherit; }
 .cta { background: var(--brand); color: #fff; }
 .cta .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 24px; padding-bottom: 24px; flex-wrap: wrap; }
 .cta b { font-size: 20px; display: block; }
-.foot { padding: 16px 0; font-size: 12px; color: var(--muted); }
-.foot .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 
 .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
 .chip { border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; font-size: 13px; background: #fff; }
@@ -93,6 +91,8 @@ button, input { font: inherit; }
 .linkbtn { background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 13px; text-decoration: underline; padding: 0; }
 
 @media (max-width: 760px) {
+  .brand img { height: 64px; max-width: 240px; }
+  .foot-grid { grid-template-columns: 1fr; }
   .hero .wrap, .detail { grid-template-columns: 1fr; }
   .hero-art { min-height: 160px; }
   .hero h1 { font-size: 27px; }
@@ -119,3 +119,29 @@ button, input { font: inherit; }
 .card .t, .detail h1, .cartrow .title { text-transform: uppercase; }
 
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+.site-footer { border-top: 1px solid var(--line); margin-top: 28px; padding: 28px 0 16px; font-size: 14px; }
+.foot-grid { display: grid; grid-template-columns: 1fr 1fr 1.4fr; gap: 28px; align-items: start; }
+.foot-title { font-size: 15px; font-weight: 600; margin: 0 0 8px; }
+.site-footer p { margin: 0 0 6px; }
+.foot-list { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 6px; }
+.foot-list a, .foot-link { text-decoration: underline; text-underline-offset: 3px; }
+.map-box { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--soft); height: 220px; }
+.map-box iframe { width: 100%; height: 100%; border: 0; display: block; }
+.map-off { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 16px; text-align: center; font-size: 13px; color: var(--muted); }
+.map-off p { margin: 0; }
+.foot-legal { display: flex; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
+.foot-legal nav { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.foot-legal a:hover { color: var(--ink); text-decoration: underline; }
+
+.cookie-banner { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 50; max-width: 760px; margin: 0 auto; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: space-between; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; box-shadow: 0 8px 28px rgba(0,0,0,.18); font-size: 13px; }
+.cookie-banner p { margin: 0; flex: 1 1 320px; }
+.cookie-banner a { text-decoration: underline; }
+.cookie-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.policy { max-width: 760px; }
+.policy h1 { font-size: 26px; margin: 0 0 14px; }
+.policy h2 { font-size: 18px; margin: 24px 0 8px; }
+.policy p { margin: 0 0 12px; white-space: pre-line; }
+.policy ul { margin: 0 0 12px; padding-left: 20px; }
+.policy li { margin: 4px 0; }

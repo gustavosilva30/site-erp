@@ -27,6 +27,11 @@ export interface Store {
   hours: string
   instagram: string
   primary_color: string
+  /** Endereço mostrado no rodapé (o digitado na loja ou o do cadastro da empresa) e a consulta do mapa. */
+  full_address: string
+  map_query: string
+  /** Quais textos legais a empresa preencheu (a chave é a da URL). */
+  policies?: Record<string, boolean>
   banners?: Banner[]
 }
 
@@ -97,4 +102,8 @@ export async function listCategories(slug: string) {
 
 export async function getProduct(slug: string, id: string) {
   return get<ProductDetail>(`${encodeURIComponent(slug)}/products/${encodeURIComponent(id)}`, 30)
+}
+
+export async function getPolicy(slug: string, key: string) {
+  return get<{ key: string; title: string; text: string }>(`${encodeURIComponent(slug)}/policies/${encodeURIComponent(key)}`, 60)
 }
