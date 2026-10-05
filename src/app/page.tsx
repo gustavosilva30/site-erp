@@ -56,7 +56,7 @@ export default async function Home() {
           <h2 className="h2">Destaques</h2>
           {destaques.products.length === 0
             ? <p className="muted">Nenhuma peça disponível no momento.</p>
-            : <div className="grid">{destaques.products.map((p) => <ProductCardView key={p.id} product={p} />)}</div>}
+            : <div className="grid">{destaques.products.map((p) => <ProductCardView key={p.id} product={p} whatsapp={store.whatsapp} storeName={store.name} />)}</div>}
           <p style={{ marginTop: 18 }}><Link href="/produtos" className="btn ghost">Ver todas as peças</Link></p>
         </div>
       </section>

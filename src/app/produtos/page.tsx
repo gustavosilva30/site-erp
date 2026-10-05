@@ -41,7 +41,7 @@ export default async function Produtos({ searchParams }: { searchParams: Promise
       </div>
       {result.products.length === 0
         ? <p className="muted">Nenhuma peça encontrada. Fale com a gente pelo WhatsApp que procuramos para você.</p>
-        : <div className="grid">{result.products.map((p) => <ProductCardView key={p.id} product={p} />)}</div>}
+        : <div className="grid">{result.products.map((p) => <ProductCardView key={p.id} product={p} whatsapp={store.whatsapp} storeName={store.name} />)}</div>}
       {pages > 1 && (
         <div className="pager">
           {page > 1 && <Link className="btn ghost sm" href={href(page - 1)}>Anterior</Link>}

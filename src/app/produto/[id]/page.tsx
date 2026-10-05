@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getProduct, getStore } from '@/lib/api'
-import { money, whatsappLink, years } from '@/lib/format'
+import { mensagemConsulta, money, semPreco, whatsappLink, years } from '@/lib/format'
 import { AddToCart } from '@/components/add-to-cart'
 
 type Props = { params: Promise<{ id: string }> }
@@ -31,7 +31,13 @@ export default async function Produto({ params }: Props) {
     ['Motor', p.engine],
     ['Garantia', p.warranty_days ? `${p.warranty_days} dias` : null],
   ]
-  const wa = whatsappLink(store.whatsapp, `Olá! Tenho interesse na peça: ${p.title}${p.sku ? ` (cód. ${p.sku})` : ''} - ${money(p.price)}. Ainda está disponível?`)
+  const consulta = semPreco(p.price)
+  const wa = whatsappLink(
+    store.whatsapp,
+    consulta
+      ? mensagemConsulta(store.name, p)
+      : `Olá! Vim pelo site da ${store.name} e tenho interesse na peça: ${p.title}${p.sku ? ` (cód. ${p.sku})` : ''} - ${money(p.price)}. Ainda está disponível?`,
+  )
 
   return (
     <main className="wrap detail">
@@ -41,10 +47,10 @@ export default async function Produto({ params }: Props) {
       </div>
       <div>
         <h1>{p.title}</h1>
-        <span className="price">{money(p.price)}</span>
+        <span className="price">{consulta ? 'Consulte a loja' : money(p.price)}</span>
         <div className="row">
-          <AddToCart product={p} />
-          {wa && <a className="btn wa" href={wa} target="_blank" rel="noopener noreferrer">Perguntar no WhatsApp</a>}
+          {!consulta && <AddToCart product={p} />}
+          {wa && <a className="btn wa" href={wa} target="_blank" rel="noopener noreferrer">{consulta ? 'Consultar preço no WhatsApp' : 'Perguntar no WhatsApp'}</a>}
         </div>
         <table className="specs">
           <tbody>{linhas.filter(([, v]) => v).map(([k, v]) => <tr key={k}><td>{k}</td><td>{v}</td></tr>)}</tbody>
