@@ -33,6 +33,26 @@ export interface PortalProductDetail extends PortalProduct {
   compatibility: { brand: string | null; model: string; year_start: number | null; year_end: number | null; engine: string | null }[]
 }
 
+/** Veículo em desmontagem (sucata) que a loja colocou no site. */
+export interface PortalSucataCard {
+  id: string
+  title: string
+  brand: string | null
+  model: string | null
+  year: string
+  color: string | null
+  fuel: string | null
+  engine: string | null
+  photo: string | null
+  /** Peças desta sucata que o cliente pode ver agora. */
+  parts_count: number
+}
+
+export interface PortalSucataDetail extends PortalSucataCard {
+  photos: string[]
+  parts: PortalProduct[]
+}
+
 export type PortalStage = 'aguardando_aprovacao' | 'aprovado' | 'recusado' | 'pago' | 'retirado' | 'cancelado' | 'expirado'
 
 export interface PortalOrder {

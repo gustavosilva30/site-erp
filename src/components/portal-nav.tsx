@@ -13,12 +13,12 @@ const ABAS: { href: string; label: string; exato?: boolean }[] = [
 ]
 
 /** Abas da área do cliente: a da página atual fica destacada e "Meu pedido" mostra quantos itens estão no carrinho. */
-export function PortalNav() {
+export function PortalNav({ temSucatas = false }: { temSucatas?: boolean }) {
   const caminho = usePathname()
   const { count } = usePortalCart()
   return (
     <nav className="ptabs" aria-label="Área do cliente">
-      {ABAS.map((a) => {
+      {(temSucatas ? [ABAS[0], ABAS[1], { href: '/conta/sucatas', label: 'Sucatas' }, ABAS[2], ABAS[3]] : ABAS).map((a) => {
         const ativa = a.exato ? caminho === a.href : caminho === a.href || caminho.startsWith(`${a.href}/`)
         return (
           <Link key={a.href} href={a.href} className={ativa ? 'on' : undefined} aria-current={ativa ? 'page' : undefined}>

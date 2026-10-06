@@ -1,9 +1,12 @@
 import Link from 'next/link'
 import { STAGE_LABEL, portalGet, requireMe, type PortalOrder } from '@/lib/portal-data'
 import { money } from '@/lib/format'
+import { findStore } from '@/lib/api'
+import { PortalSucataCta } from '@/components/portal-sucata-cta'
 
 export default async function Conta() {
   const { token, me } = await requireMe()
+  const store = await findStore()
   const r = await portalGet<{ orders: PortalOrder[] }>(token, '/orders')
   const todos = r?.orders ?? []
   const recentes = todos.slice(0, 5)
@@ -19,6 +22,8 @@ export default async function Conta() {
           {emAndamento > 0 && <Link href="/conta/pedidos?filtro=andamento" className="btn ghostlight">{emAndamento} pedido(s) em andamento</Link>}
         </div>
       </section>
+
+      {store?.has_sucatas && <PortalSucataCta />}
 
       <div className="ptiles">
         <Link href="/conta/produtos" className="ptile"><span className="ico" aria-hidden>🔎</span><strong>Produtos</strong><span>Busque por peça, código ou carro.</span></Link>
