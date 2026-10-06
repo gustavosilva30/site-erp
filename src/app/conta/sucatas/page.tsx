@@ -15,9 +15,9 @@ export default async function ContaSucatas({ searchParams }: { searchParams: Pro
   const page = Math.max(1, Number.parseInt(one(raw.page) ?? '1', 10) || 1)
   const { token } = await requireMe()
   const store = await getStore()
-  if (!store.has_sucatas) notFound()
   const r = await portalGet<{ sucatas: PortalSucataCard[]; total: number; limit: number }>(token, `/sucatas?page=${page}&limit=24`)
   const sucatas = r?.sucatas ?? []
+  if (!store.has_sucatas && sucatas.length === 0) notFound()
   const total = r?.total ?? 0
   const pages = Math.max(1, Math.ceil(total / (r?.limit ?? 24)))
   const href = (p: number) => (p > 1 ? `/conta/sucatas?page=${p}` : '/conta/sucatas')
