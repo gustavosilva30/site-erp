@@ -5,7 +5,11 @@ const config: NextConfig = {
   output: 'standalone',
   async redirects() {
     // www.dominio -> dominio: um só endereço por loja (o Google trata www e sem www como sites diferentes).
-    return [{ source: '/:path*', has: [{ type: 'host', value: 'www.(?<dominio>.+)' }], destination: 'https://:dominio/:path*', permanent: true }]
+    return [
+      { source: '/:path*', has: [{ type: 'host', value: 'www.(?<dominio>.+)' }], destination: 'https://:dominio/:path*', permanent: true },
+      // Quem digita "veiculos" quer a lista de sucatas; temporário (não é o endereço oficial da página).
+      { source: '/veiculos', destination: '/sucatas', permanent: false },
+    ]
   },
   async headers() {
     return [
