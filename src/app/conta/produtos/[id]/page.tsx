@@ -16,6 +16,9 @@ export default async function ContaProduto({ params }: { params: Promise<{ id: s
   const p = await portalGet<PortalProductDetail>(token, `/products/${encodeURIComponent(id.slice(0, 255))}`)
   if (!p) notFound()
   const store = await getStore()
+  // Servidor antigo pode nao mandar estes campos: a pagina nunca quebra por isso.
+  const fotos = Array.isArray(p.photos) ? p.photos : []
+  const compat = Array.isArray(p.compatibility) ? p.compatibility : []
   const consulta = p.consult ? whatsappLink(store.whatsapp, mensagemConsultaPortal(store.name, p)) : null
   const ano = years(p)
   const linhas: [string, string][] = ([
@@ -36,9 +39,10 @@ export default async function ContaProduto({ params }: { params: Promise<{ id: s
     <main className="wrap sec">
       <p className="muted small"><Link href="/conta/produtos">← Voltar aos produtos</Link></p>
       <div className="detail">
-        <PortalGallery photos={p.photos} alt={p.title} />
+        <PortalGallery photos={fotos} alt={p.title} />
         <div>
           <h1>{p.title}</h1>
+          <div className="pbuy">
           {p.consult ? (
             <>
               <span className="price">Consulte a loja</span>
@@ -57,6 +61,7 @@ export default async function ContaProduto({ params }: { params: Promise<{ id: s
               <PortalAdd product={p} />
             </>
           )}
+          </div>
 
           <table className="specs" style={{ marginTop: 18 }}>
             <tbody>
@@ -66,11 +71,11 @@ export default async function ContaProduto({ params }: { params: Promise<{ id: s
 
           {p.description && <p style={{ whiteSpace: 'pre-line', marginTop: 16 }}>{p.description}</p>}
 
-          {p.compatibility.length > 0 && (
+          {compat.length > 0 && (
             <div style={{ marginTop: 16 }}>
               <strong>Serve nestes veículos</strong>
               <ul className="compatlist">
-                {p.compatibility.map((c, k) => (
+                {compat.map((c, k) => (
                   <li key={k}>{[c.brand, c.model].filter(Boolean).join(' ')}{years({ year_start: c.year_start, year_end: c.year_end }) ? ` ${years({ year_start: c.year_start, year_end: c.year_end })}` : ''}{c.engine ? ` · motor ${c.engine}` : ''}</li>
                 ))}
               </ul>

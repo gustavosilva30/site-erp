@@ -7,6 +7,9 @@ import { PortalAdd } from '@/components/portal-add'
 type Raw = Record<string, string | string[] | undefined>
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v)
 
+/** Quantas categorias aparecem como botão; as outras ficam em "Mais categorias" (nunca um muro de botões). */
+const CATEGORIAS_VISIVEIS = 8
+
 /** Catálogo do cliente: só o que tem estoque agora, com o preço dele (desconto já aplicado). */
 export default async function ContaProdutos({ searchParams }: { searchParams: Promise<Raw> }) {
   const raw = await searchParams
@@ -28,6 +31,10 @@ export default async function ContaProdutos({ searchParams }: { searchParams: Pr
   const products = lista?.products ?? []
   const total = lista?.total ?? 0
   const pages = Math.max(1, Math.ceil(total / (lista?.limit ?? 24)))
+  // Mesmo com um servidor antigo que devolvesse a lista inteira, a tela nunca mostra mais que isso.
+  const categorias = (cats?.categories ?? []).slice(0, 30)
+  const visiveis = categorias.slice(0, CATEGORIAS_VISIVEIS)
+  const restantes = categorias.slice(CATEGORIAS_VISIVEIS)
   const href = (p: number, c = category) => {
     const s = new URLSearchParams()
     if (q) s.set('q', q)
@@ -36,61 +43,96 @@ export default async function ContaProdutos({ searchParams }: { searchParams: Pr
     const t = s.toString()
     return t ? `/conta/produtos?${t}` : '/conta/produtos'
   }
+  const chip = (c: { name: string; n: number }) => (
+    <Link key={c.name} href={href(1, c.name)} className={`chip${category === c.name ? ' on' : ''}`}>{capitalize(c.name)} <span className="cnt">{c.n}</span></Link>
+  )
 
   return (
     <main className="wrap sec">
-      <h1 className="h2">Produtos disponíveis <span className="muted small">({total})</span></h1>
-      <form action="/conta/produtos" className="search" role="search" style={{ marginBottom: 12 }}>
-        <input name="q" defaultValue={q} placeholder="Buscar peça, código ou carro" aria-label="Buscar peça" maxLength={80} />
-        {category && <input type="hidden" name="category" value={category} />}
-        <button className="btn sm" type="submit">Buscar</button>
-      </form>
-      {q && (cats?.categories.length ?? 0) > 0 && <p className="suggest">Categorias com resultado para &quot;{q}&quot;:</p>}
-      <div className="filters">
-        <Link href={href(1, '')} className={`chip${!category ? ' on' : ''}`}>Todas</Link>
-        {/* A categoria escolhida fica visível mesmo que não esteja entre as sugeridas. */}
-        {category && !(cats?.categories ?? []).some((c) => c.name === category) && <Link href={href(1, category)} className="chip on">{capitalize(category)}</Link>}
-        {(cats?.categories ?? []).map((c) => (
-          <Link key={c.name} href={href(1, c.name)} className={`chip${category === c.name ? ' on' : ''}`}>{capitalize(c.name)} <span className="muted small">({c.n})</span></Link>
-        ))}
+      <div className="psec-head">
+        <h1 className="h2" style={{ margin: 0 }}>Produtos disponíveis</h1>
+        <span className="muted small">{total} {total === 1 ? 'peça' : 'peças'}</span>
       </div>
 
-      {products.length === 0 && <p className="muted">Nenhum produto disponível com esse filtro.</p>}
-      <div className="grid">
-        {products.map((p) => (
-          <div className="card" key={p.id}>
-            <div className="ph"><Link href={`/conta/produtos/${encodeURIComponent(p.id)}`} aria-label={`Ver detalhes de ${p.title}`}>{p.photo ? <img src={p.photo} alt={p.title} loading="lazy" /> : <span>Sem foto</span>}</Link></div>
-            <div className="t"><Link href={`/conta/produtos/${encodeURIComponent(p.id)}`}>{p.title}</Link></div>
-            <div className="m">{[p.montadora, p.model, years(p)].filter(Boolean).join(' · ')}{p.sku ? ` · cód. ${p.sku}` : ''}</div>
-            <div className="m">{p.available} disponível(is)</div>
-            {p.consult ? (
-              // Sem preço: não vai para o pedido. O cliente chama a loja já com a peça na mensagem.
-              <>
-                <div className="p"><span className="price">Consulte a loja</span></div>
-                {whatsappLink(store.whatsapp, mensagemConsultaPortal(store.name, p))
-                  ? <a className="btn wa sm" style={{ marginTop: 8 }} href={whatsappLink(store.whatsapp, mensagemConsultaPortal(store.name, p))!} target="_blank" rel="noopener noreferrer">Falar com a loja</a>
-                  : <span className="muted small" style={{ marginTop: 8 }}>Fale com a loja para saber o valor.</span>}
-              </>
-            ) : (
-              <>
-                <div className="p">
-                  <span>
-                    {me.discount_percent > 0 && p.price_with_discount < p.price && <span className="muted small" style={{ textDecoration: 'line-through', marginRight: 6 }}>{money(p.price)}</span>}
-                    <span className="price">{money(p.price_with_discount)}</span>
-                  </span>
-                </div>
-                <PortalAdd product={p} />
-              </>
+      <form action="/conta/produtos" className="psearch" role="search">
+        <input name="q" defaultValue={q} placeholder="Buscar peça, código ou carro (ex.: porta diant esq palio)" aria-label="Buscar peça" maxLength={80} />
+        {category && <input type="hidden" name="category" value={category} />}
+        <button className="btn" type="submit">Buscar</button>
+      </form>
+
+      {(q || category) && (
+        <p className="pfound">
+          {total} resultado(s){q ? <> para <strong>&quot;{q}&quot;</strong></> : null}{category ? <> em <strong>{capitalize(category)}</strong></> : null}
+          {' · '}<Link href="/conta/produtos">limpar filtros</Link>
+        </p>
+      )}
+
+      {(categorias.length > 0 || category) && (
+        <>
+          {q && categorias.length > 0 && <p className="suggest">Categorias com resultado:</p>}
+          <div className="pchips">
+            <Link href={href(1, '')} className={`chip${!category ? ' on' : ''}`}>Todas</Link>
+            {/* A categoria escolhida fica visível mesmo que não esteja entre as sugeridas. */}
+            {category && !categorias.some((c) => c.name === category) && <Link href={href(1, category)} className="chip on">{capitalize(category)}</Link>}
+            {visiveis.map(chip)}
+            {restantes.length > 0 && (
+              <details className="pmore">
+                <summary className="chip">Mais categorias ({restantes.length})</summary>
+                <div className="pmore-list">{restantes.map(chip)}</div>
+              </details>
             )}
           </div>
-        ))}
+        </>
+      )}
+
+      {products.length === 0 && (
+        <div className="pempty">
+          <p><strong>Nenhum produto encontrado.</strong></p>
+          <p className="muted small">Tente menos palavras, ou outro jeito de escrever (ex.: &quot;parachoque diant&quot;). Não achou a peça? Fale com a loja.</p>
+        </div>
+      )}
+
+      <div className="pgrid">
+        {products.map((p) => {
+          const detalhe = `/conta/produtos/${encodeURIComponent(p.id)}`
+          const zap = p.consult ? whatsappLink(store.whatsapp, mensagemConsultaPortal(store.name, p)) : null
+          return (
+            <article className="pcard" key={p.id}>
+              <Link className="pimg" href={detalhe} aria-label={`Ver detalhes de ${p.title}`}>
+                {p.photo ? <img src={p.photo} alt={p.title} loading="lazy" /> : <span className="nophoto">Sem foto</span>}
+                {p.consult ? <span className="tag consult">Sob consulta</span> : me.discount_percent > 0 && p.price_with_discount < p.price ? <span className="tag">-{me.discount_percent}%</span> : null}
+              </Link>
+              <div className="pbody">
+                <Link className="ptitle" href={detalhe}>{p.title}</Link>
+                <div className="pmeta">{[p.montadora, p.model, years(p)].filter(Boolean).join(' · ')}</div>
+                {p.sku && <div className="pmeta">cód. {p.sku}</div>}
+                <div className="pprice">
+                  {p.consult ? <span className="now consult">Consulte a loja</span> : (
+                    <>
+                      {me.discount_percent > 0 && p.price_with_discount < p.price && <span className="old">{money(p.price)}</span>}
+                      <span className="now">{money(p.price_with_discount)}</span>
+                    </>
+                  )}
+                </div>
+                <div className="pstock">{p.available} {p.available === 1 ? 'disponível' : 'disponíveis'}</div>
+              </div>
+              <div className="pact">
+                {p.consult
+                  ? (zap
+                      ? <a className="btn wa sm" href={zap} target="_blank" rel="noopener noreferrer">Falar com a loja</a>
+                      : <span className="muted small">Fale com a loja para saber o valor.</span>)
+                  : <PortalAdd product={p} />}
+              </div>
+            </article>
+          )
+        })}
       </div>
 
       {pages > 1 && (
         <nav className="pager" aria-label="Páginas">
-          {page > 1 && <Link href={href(page - 1)} className="btn ghost sm">Anterior</Link>}
+          {page > 1 && <Link href={href(page - 1)} className="btn ghost sm">← Anterior</Link>}
           <span className="muted small">Página {page} de {pages}</span>
-          {page < pages && <Link href={href(page + 1)} className="btn ghost sm">Próxima</Link>}
+          {page < pages && <Link href={href(page + 1)} className="btn ghost sm">Próxima →</Link>}
         </nav>
       )}
     </main>
