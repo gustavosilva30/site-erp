@@ -76,3 +76,7 @@ export function usePortalCart(): Ctx {
   if (!c) throw new Error('usePortalCart fora do PortalCartProvider')
   return c
 }
+
+export function usePortalCartOptional(): Ctx | null {
+  return useContext(PortalCart)
+}
