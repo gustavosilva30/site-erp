@@ -66,7 +66,7 @@ export function PortalCartView() {
         <div className="cartrow" key={i.id}>
           <div className="ph">{i.photo && <img src={i.photo} alt="" />}</div>
           <div>
-            <div className="title">{i.title}</div>
+            <div className="title"><Link href={`/conta/produtos/${encodeURIComponent(i.id)}`}>{i.title}</Link></div>
             <div className="qty">
               <button type="button" aria-label="Diminuir" onClick={() => setQty(i.id, i.qty - 1)}>-</button>
               <span>{i.qty}</span>

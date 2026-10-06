@@ -23,6 +23,16 @@ export interface PortalProduct {
   consult: boolean
 }
 
+/** Produto com as informações completas (página do produto). */
+export interface PortalProductDetail extends PortalProduct {
+  description: string | null
+  part_number: string | null
+  engine: string | null
+  warranty_days: number | null
+  photos: string[]
+  compatibility: { brand: string | null; model: string; year_start: number | null; year_end: number | null; engine: string | null }[]
+}
+
 export type PortalStage = 'aguardando_aprovacao' | 'aprovado' | 'recusado' | 'pago' | 'retirado' | 'cancelado' | 'expirado'
 
 export interface PortalOrder {

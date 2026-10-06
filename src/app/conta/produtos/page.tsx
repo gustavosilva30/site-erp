@@ -22,7 +22,8 @@ export default async function ContaProdutos({ searchParams }: { searchParams: Pr
   qs.set('page', String(page)); qs.set('limit', '24')
   const [lista, cats] = await Promise.all([
     portalGet<{ products: PortalProduct[]; total: number; page: number; limit: number }>(token, `/products?${qs}`),
-    portalGet<{ categories: { name: string; n: number }[] }>(token, '/categories'),
+    // Sugestões de categoria: com busca, as que têm peça no resultado (as que combinam com o nome primeiro).
+    portalGet<{ categories: { name: string; n: number }[] }>(token, `/categories${q ? `?q=${encodeURIComponent(q)}` : ''}`),
   ])
   const products = lista?.products ?? []
   const total = lista?.total ?? 0
@@ -44,10 +45,13 @@ export default async function ContaProdutos({ searchParams }: { searchParams: Pr
         {category && <input type="hidden" name="category" value={category} />}
         <button className="btn sm" type="submit">Buscar</button>
       </form>
+      {q && (cats?.categories.length ?? 0) > 0 && <p className="suggest">Categorias com resultado para &quot;{q}&quot;:</p>}
       <div className="filters">
         <Link href={href(1, '')} className={`chip${!category ? ' on' : ''}`}>Todas</Link>
-        {(cats?.categories ?? []).slice(0, 24).map((c) => (
-          <Link key={c.name} href={href(1, c.name)} className={`chip${category === c.name ? ' on' : ''}`}>{capitalize(c.name)}</Link>
+        {/* A categoria escolhida fica visível mesmo que não esteja entre as sugeridas. */}
+        {category && !(cats?.categories ?? []).some((c) => c.name === category) && <Link href={href(1, category)} className="chip on">{capitalize(category)}</Link>}
+        {(cats?.categories ?? []).map((c) => (
+          <Link key={c.name} href={href(1, c.name)} className={`chip${category === c.name ? ' on' : ''}`}>{capitalize(c.name)} <span className="muted small">({c.n})</span></Link>
         ))}
       </div>
 
@@ -55,8 +59,8 @@ export default async function ContaProdutos({ searchParams }: { searchParams: Pr
       <div className="grid">
         {products.map((p) => (
           <div className="card" key={p.id}>
-            <div className="ph">{p.photo ? <img src={p.photo} alt={p.title} loading="lazy" /> : 'Sem foto'}</div>
-            <div className="t">{p.title}</div>
+            <div className="ph"><Link href={`/conta/produtos/${encodeURIComponent(p.id)}`} aria-label={`Ver detalhes de ${p.title}`}>{p.photo ? <img src={p.photo} alt={p.title} loading="lazy" /> : <span>Sem foto</span>}</Link></div>
+            <div className="t"><Link href={`/conta/produtos/${encodeURIComponent(p.id)}`}>{p.title}</Link></div>
             <div className="m">{[p.montadora, p.model, years(p)].filter(Boolean).join(' · ')}{p.sku ? ` · cód. ${p.sku}` : ''}</div>
             <div className="m">{p.available} disponível(is)</div>
             {p.consult ? (

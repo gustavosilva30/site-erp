@@ -191,3 +191,19 @@ button, input { font: inherit; }
 .timeline li::before { content: ""; position: absolute; left: -20px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--brand); }
 .timeline li.recusado::before, .timeline li.cancelado::before { background: #b42318; }
 .timeline li.aprovado::before, .timeline li.pago::before, .timeline li.retirado::before { background: #1c7c3a; }
+
+/* ---- Portal: foto ampliada e detalhe do produto ---- */
+.detail .main.zoomable { position: relative; width: 100%; border: 0; padding: 0; cursor: zoom-in; }
+.zoomhint { position: absolute; right: 10px; bottom: 10px; background: rgba(0,0,0,.65); color: #fff; font-size: 12px; padding: 4px 10px; border-radius: 999px; pointer-events: none; }
+.lightbox { position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,.92); display: flex; align-items: center; justify-content: center; padding: 20px; }
+.lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; }
+.lb-close { position: absolute; top: 12px; right: 16px; font-size: 38px; line-height: 1; color: #fff; background: none; border: 0; cursor: pointer; }
+.lb-nav { position: absolute; top: 50%; transform: translateY(-50%); font-size: 54px; line-height: 1; color: #fff; background: rgba(255,255,255,.12); border: 0; border-radius: 50%; width: 52px; height: 64px; cursor: pointer; }
+.lb-nav.prev { left: 12px; } .lb-nav.next { right: 12px; }
+.lb-count { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 13px; background: rgba(0,0,0,.5); padding: 3px 12px; border-radius: 999px; }
+/* O link cobre o quadro da foto (posição absoluta): altura em % não se resolve dentro de um quadro com proporção fixa e a imagem voltava ao tamanho original. */
+.card .ph { position: relative; }
+.card .ph a { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.card .t a { color: inherit; }
+.compatlist { margin: 6px 0 0; padding-left: 18px; font-size: 14px; }
+.suggest { font-size: 13px; color: var(--muted); margin: 8px 0 4px; }
