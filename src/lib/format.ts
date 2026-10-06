@@ -20,3 +20,7 @@ export const capitalize = (text: string | null | undefined) => {
   const t = (text ?? '').trim().toLocaleLowerCase('pt-BR')
   return t ? t.charAt(0).toLocaleUpperCase('pt-BR') + t.slice(1) : ''
 }
+
+/** Mensagem de quem, logado no portal, clicou em uma peça "Consulte a loja": diz que veio do portal e leva o nome e o código. */
+export const mensagemConsultaPortal = (storeName: string, p: { title: string; sku: string | null }) =>
+  `Olá! Vim pelo portal do cliente da ${storeName} e quero saber o preço e a disponibilidade desta peça:\n\n${p.title}${p.sku ? ` (cód. ${p.sku})` : ''}`

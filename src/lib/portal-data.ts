@@ -19,6 +19,8 @@ export interface PortalProduct {
   photo: string | null
   /** Quantidade que ainda dá para pedir (estoque menos o já reservado). */
   available: number
+  /** Sem preço cadastrado: não entra no pedido; o cliente fala com a loja para combinar o valor. */
+  consult: boolean
 }
 
 export type PortalStage = 'aguardando_aprovacao' | 'aprovado' | 'recusado' | 'pago' | 'retirado' | 'cancelado' | 'expirado'

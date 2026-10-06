@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { capitalize, money, years } from '@/lib/format'
+import { getStore } from '@/lib/api'
+import { capitalize, mensagemConsultaPortal, money, whatsappLink, years } from '@/lib/format'
 import { portalGet, requireMe, type PortalProduct } from '@/lib/portal-data'
 import { PortalAdd } from '@/components/portal-add'
 
@@ -13,6 +14,7 @@ export default async function ContaProdutos({ searchParams }: { searchParams: Pr
   const category = (one(raw.category) ?? '').slice(0, 80)
   const page = Math.max(1, Number.parseInt(one(raw.page) ?? '1', 10) || 1)
   const { token, me } = await requireMe()
+  const store = await getStore()
 
   const qs = new URLSearchParams()
   if (q) qs.set('q', q)
@@ -57,13 +59,25 @@ export default async function ContaProdutos({ searchParams }: { searchParams: Pr
             <div className="t">{p.title}</div>
             <div className="m">{[p.montadora, p.model, years(p)].filter(Boolean).join(' · ')}{p.sku ? ` · cód. ${p.sku}` : ''}</div>
             <div className="m">{p.available} disponível(is)</div>
-            <div className="p">
-              <span>
-                {me.discount_percent > 0 && p.price_with_discount < p.price && <span className="muted small" style={{ textDecoration: 'line-through', marginRight: 6 }}>{money(p.price)}</span>}
-                <span className="price">{money(p.price_with_discount)}</span>
-              </span>
-            </div>
-            <PortalAdd product={p} />
+            {p.consult ? (
+              // Sem preço: não vai para o pedido. O cliente chama a loja já com a peça na mensagem.
+              <>
+                <div className="p"><span className="price">Consulte a loja</span></div>
+                {whatsappLink(store.whatsapp, mensagemConsultaPortal(store.name, p))
+                  ? <a className="btn wa sm" style={{ marginTop: 8 }} href={whatsappLink(store.whatsapp, mensagemConsultaPortal(store.name, p))!} target="_blank" rel="noopener noreferrer">Falar com a loja</a>
+                  : <span className="muted small" style={{ marginTop: 8 }}>Fale com a loja para saber o valor.</span>}
+              </>
+            ) : (
+              <>
+                <div className="p">
+                  <span>
+                    {me.discount_percent > 0 && p.price_with_discount < p.price && <span className="muted small" style={{ textDecoration: 'line-through', marginRight: 6 }}>{money(p.price)}</span>}
+                    <span className="price">{money(p.price_with_discount)}</span>
+                  </span>
+                </div>
+                <PortalAdd product={p} />
+              </>
+            )}
           </div>
         ))}
       </div>
