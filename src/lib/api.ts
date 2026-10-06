@@ -40,6 +40,8 @@ export interface Store {
   google_reviews_url: string | null
   /** A empresa colocou alguma sucata no site. */
   has_sucatas: boolean
+  /** A empresa ligou o portal do cliente (login e pedidos). */
+  portal_enabled: boolean
 }
 
 export interface ProductCard {

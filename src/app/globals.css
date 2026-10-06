@@ -167,3 +167,27 @@ button, input { font: inherit; }
   .stickybar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; background: #fff; border-top: 1px solid var(--line, #ddd); box-shadow: 0 -4px 14px rgba(0,0,0,.08); }
 }
 .specs th { text-align: left; font-weight: 400; color: var(--muted); width: 38%; padding: 6px 14px 6px 0; vertical-align: top; }
+
+/* ---- Portal do cliente (area logada) ---- */
+.pbox { max-width: 440px; margin: 0 auto; }
+.pform { display: flex; flex-direction: column; gap: 14px; margin-top: 14px; }
+.field { display: flex; flex-direction: column; gap: 6px; border: 0; padding: 0; margin: 0; font-size: 14px; }
+.field > span { font-weight: 500; }
+.field input:not([type="radio"]), .field textarea { border: 1px solid var(--line); border-radius: 10px; padding: 11px 12px; background: #fff; outline: none; font: inherit; }
+.field input:not([type="radio"]):focus, .field textarea:focus { border-color: var(--brand); }
+.alert { background: #fdecec; color: #8a1c1c; border: 1px solid #f3c2c2; border-radius: 10px; padding: 10px 12px; font-size: 14px; margin: 8px 0; }
+.okbox { background: #eaf6ee; color: #1c5b2f; border: 1px solid #bfe2c9; border-radius: 10px; padding: 10px 12px; font-size: 14px; margin-bottom: 12px; }
+.pbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.prow { display: grid; grid-template-columns: 1fr auto auto; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.pill { display: inline-block; border-radius: 999px; padding: 3px 10px; font-size: 12px; background: var(--soft); color: var(--ink); vertical-align: middle; }
+.pill.aguardando_aprovacao { background: #fff4d6; color: #7a5a00; }
+.pill.aprovado, .pill.pago, .pill.retirado { background: #e3f4e8; color: #1c5b2f; }
+.pill.recusado, .pill.cancelado, .pill.expirado { background: #fdecec; color: #8a1c1c; }
+@media (max-width: 560px) { .prow { grid-template-columns: 1fr auto; } .prow .pill { grid-row: 2; justify-self: start; } }
+
+/* ---- Portal: linha do tempo do pedido ---- */
+.timeline { list-style: none; margin: 14px 0 18px; padding: 0 0 0 14px; border-left: 2px solid var(--line); display: flex; flex-direction: column; gap: 10px; font-size: 14px; }
+.timeline li { position: relative; }
+.timeline li::before { content: ""; position: absolute; left: -20px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--brand); }
+.timeline li.recusado::before, .timeline li.cancelado::before { background: #b42318; }
+.timeline li.aprovado::before, .timeline li.pago::before, .timeline li.retirado::before { background: #1c7c3a; }

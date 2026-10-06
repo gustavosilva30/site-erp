@@ -5,7 +5,7 @@ import { siteOrigin } from '@/lib/seo'
 export default async function robots(): Promise<MetadataRoute.Robots> {
   const origem = await siteOrigin()
   return {
-    rules: [{ userAgent: '*', allow: '/', disallow: ['/carrinho', '/_next/'] }],
+    rules: [{ userAgent: '*', allow: '/', disallow: ['/carrinho', '/conta', '/entrar', '/api/', '/_next/'] }],
     sitemap: `${origem}/sitemap.xml`,
     host: origem,
   }

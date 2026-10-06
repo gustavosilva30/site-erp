@@ -27,6 +27,7 @@ export function Header({ store }: { store: Store }) {
           <Link href="/">Início</Link>
           <Link href="/produtos">Peças</Link>
           {store.has_sucatas && <Link href="/sucatas">Sucatas</Link>}
+          {store.portal_enabled && <Link href="/entrar">Área do cliente</Link>}
         </nav>
       </div>
     </header>
