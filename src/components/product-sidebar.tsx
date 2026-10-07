@@ -66,17 +66,7 @@ export function ProductSidebar({ categories, facets, showDepartments = true, cur
     router.push(sp.toString() ? `/produtos?${sp.toString()}` : '/produtos')
   }
 
-  const aplicarLado = (lado: string) => {
-    const termoAtual = current.q ?? ''
-    const novoTermo = termoAtual ? `${termoAtual} ${lado}` : lado
-    const sp = new URLSearchParams()
-    sp.set('q', novoTermo)
-    if (current.category) sp.set('category', current.category)
-    if (current.montadora) sp.set('montadora', current.montadora)
-    if (current.model) sp.set('model', current.model)
-    if (current.year) sp.set('year', current.year)
-    router.push(`/produtos?${sp.toString()}`)
-  }
+
 
   const buildUrl = (patch: Record<string, string | string[] | undefined>) => {
     const sp = new URLSearchParams()
@@ -144,16 +134,7 @@ export function ProductSidebar({ categories, facets, showDepartments = true, cur
         </div>
       </div>
 
-      {/* Posição / Lado da Peça */}
-      <div className="sidebar-group">
-        <span className="sidebar-title">Lado / Posição</span>
-        <div className="sidebar-chips">
-          <button type="button" onClick={() => aplicarLado('dianteiro')} className="chip">Dianteiro</button>
-          <button type="button" onClick={() => aplicarLado('traseiro')} className="chip">Traseiro</button>
-          <button type="button" onClick={() => aplicarLado('direito')} className="chip">Direito (LD)</button>
-          <button type="button" onClick={() => aplicarLado('esquerdo')} className="chip">Esquerdo (LE)</button>
-        </div>
-      </div>
+
 
       {/* Faixa de Preço */}
       <div className="sidebar-group">
