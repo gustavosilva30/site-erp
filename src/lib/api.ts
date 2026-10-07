@@ -53,6 +53,8 @@ export interface Store {
   has_sucatas: boolean
   /** A empresa ligou o portal do cliente (login e pedidos). */
   portal_enabled: boolean
+  show_departments?: boolean
+  show_car_finder?: boolean
   /** Informações de confiança e condições comerciais configuradas pela empresa. */
   trust?: StoreTrust
 }

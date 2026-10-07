@@ -9,6 +9,7 @@ import { DEPARTMENTS, getCategoriesForDepartment } from '@/lib/departments'
 interface SidebarProps {
   categories: { name: string; total: number }[]
   facets: Facets
+  showDepartments?: boolean
   current: {
     q?: string
     category?: string
@@ -22,11 +23,31 @@ interface SidebarProps {
   }
 }
 
-export function ProductSidebar({ categories, facets, current }: SidebarProps) {
+export function ProductSidebar({ categories, facets, showDepartments = true, current }: SidebarProps) {
   const router = useRouter()
   const [minPrice, setMinPrice] = useState(current.price_min ?? '')
   const [maxPrice, setMaxPrice] = useState(current.price_max ?? '')
-  const [buscaLado, setBuscaLado] = useState('')
+
+  // Deduplicação case-insensitive no frontend para marcas/montadoras
+  const montadorasDeduplicadas = facets.montadoras.reduce((acc, m) => {
+    const nameStr = m.name?.trim() ?? ''
+    if (!nameStr) return acc
+    const key = nameStr.toLowerCase()
+    const existing = acc.find((x) => x.name.trim().toLowerCase() === key)
+    if (existing) {
+      existing.total += m.total
+      if (/[a-z]/.test(nameStr) && /[A-Z]/.test(nameStr)) {
+        existing.name = nameStr
+      }
+    } else {
+      let cleanName = nameStr
+      if (/^[A-Z0-9\s-]+$/.test(nameStr) && nameStr.length > 3) {
+        cleanName = nameStr.charAt(0).toUpperCase() + nameStr.slice(1).toLowerCase()
+      }
+      acc.push({ name: cleanName, total: m.total })
+    }
+    return acc
+  }, [] as { name: string; total: number }[]).sort((a, b) => b.total - a.total || a.name.localeCompare(b.name))
 
   const aplicarPreco = (e: React.FormEvent) => {
     e.preventDefault()
@@ -91,25 +112,27 @@ export function ProductSidebar({ categories, facets, current }: SidebarProps) {
       </div>
 
       {/* Departamentos */}
-      <div className="sidebar-group">
-        <span className="sidebar-title">Departamentos</span>
-        <div className="sidebar-list">
-          {DEPARTMENTS.map((dept) => {
-            const deptCats = getCategoriesForDepartment(dept.id, categories)
-            if (deptCats.length === 0) return null
-            const isSelected = current.categories?.some((c) => deptCats.includes(c))
-            return (
-              <Link
-                key={dept.id}
-                href={buildUrl({ categories: isSelected ? undefined : deptCats, category: undefined })}
-                className={`sidebar-item ${isSelected ? 'on' : ''}`}
-              >
-                <span>{dept.icon} {dept.name}</span>
-              </Link>
-            )
-          })}
+      {showDepartments && (
+        <div className="sidebar-group">
+          <span className="sidebar-title">Departamentos</span>
+          <div className="sidebar-list">
+            {DEPARTMENTS.map((dept) => {
+              const deptCats = getCategoriesForDepartment(dept.id, categories)
+              if (deptCats.length === 0) return null
+              const isSelected = current.categories?.some((c) => deptCats.includes(c))
+              return (
+                <Link
+                  key={dept.id}
+                  href={buildUrl({ categories: isSelected ? undefined : deptCats, category: undefined })}
+                  className={`sidebar-item ${isSelected ? 'on' : ''}`}
+                >
+                  <span>{dept.icon} {dept.name}</span>
+                </Link>
+              )
+            })}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Condição */}
       <div className="sidebar-group">
@@ -156,18 +179,18 @@ export function ProductSidebar({ categories, facets, current }: SidebarProps) {
       </div>
 
       {/* Montadoras */}
-      {facets.montadoras.length > 0 && (
+      {montadorasDeduplicadas.length > 0 && (
         <div className="sidebar-group">
           <span className="sidebar-title">Marca / Montadora</span>
           <div className="sidebar-list scrollable">
             <Link href={buildUrl({ montadora: undefined, model: undefined })} className={`sidebar-item ${!current.montadora ? 'on' : ''}`}>
               <span>Todas as marcas</span>
             </Link>
-            {facets.montadoras.map((m) => (
+            {montadorasDeduplicadas.map((m) => (
               <Link
                 key={m.name}
-                href={buildUrl({ montadora: current.montadora === m.name ? undefined : m.name, model: undefined })}
-                className={`sidebar-item ${current.montadora === m.name ? 'on' : ''}`}
+                href={buildUrl({ montadora: current.montadora?.toLowerCase() === m.name.toLowerCase() ? undefined : m.name, model: undefined })}
+                className={`sidebar-item ${current.montadora?.toLowerCase() === m.name.toLowerCase() ? 'on' : ''}`}
               >
                 <span>{m.name}</span>
                 <span className="count">{m.total}</span>

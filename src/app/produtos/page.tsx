@@ -99,13 +99,16 @@ export default async function Produtos({ searchParams }: { searchParams: Promise
       </div>
 
       {/* Seletor rápido de compatibilidade por veiculo (estilo garagem) */}
-      <CarFilter facets={facets} atual={{ montadora: sp.montadora, model: sp.model, year: sp.year }} compacto />
+      {store.show_car_finder !== false && (
+        <CarFilter facets={facets} atual={{ montadora: sp.montadora, model: sp.model, year: sp.year }} compacto />
+      )}
 
       {/* Layout Principal: Barra Lateral de Filtros + Grade de Produtos */}
       <div className="catalog-layout">
         <ProductSidebar
           categories={categories}
           facets={facets}
+          showDepartments={store.show_departments !== false}
           current={{
             q,
             category: sp.category,

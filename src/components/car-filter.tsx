@@ -19,6 +19,8 @@ export function CarFilter({
   const [modelo, setModelo] = useState(atual?.model ?? '')
   const modelos = facets.models.filter((m) => !montadora || m.montadora.toLowerCase() === montadora.toLowerCase())
 
+  const montadorasDeduplicadas = [...new Map(facets.montadoras.map((m) => [m.name.trim().toLowerCase(), m.name])).values()].sort((a, b) => a.localeCompare(b))
+
   if (facets.montadoras.length === 0) return null
 
   return (
@@ -44,9 +46,9 @@ export function CarFilter({
             }}
           >
             <option value="">Selecione a Marca</option>
-            {facets.montadoras.map((m) => (
-              <option key={m.name} value={m.name}>
-                {m.name}
+            {montadorasDeduplicadas.map((nome) => (
+              <option key={nome} value={nome}>
+                {nome}
               </option>
             ))}
           </select>

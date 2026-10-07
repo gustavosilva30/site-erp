@@ -29,7 +29,7 @@ export default async function Home() {
             {store.tagline && <div className="small" style={{ opacity: .8, letterSpacing: 1, textTransform: 'uppercase' }}>{store.tagline}</div>}
             <h1>{store.hero_title}</h1>
             {store.hero_subtitle && <p style={{ opacity: .85, marginTop: -6, fontSize: 16 }}>{store.hero_subtitle}</p>}
-            <CarFilter facets={facets} />
+            {store.show_car_finder !== false && <CarFilter facets={facets} />}
           </div>
           <div className={`hero-art${store.banners?.length ? ' has-carousel' : ''}`}>
             {store.banners?.length ? <Carousel banners={store.banners} /> : (store.address || store.name)}
@@ -41,7 +41,7 @@ export default async function Home() {
       <TrustBanner store={store} />
 
       {/* Grade de Departamentos Principais */}
-      <DepartmentsGrid categories={categories} />
+      {store.show_departments !== false && <DepartmentsGrid categories={categories} />}
 
       {/* Destaques do Catálogo */}
       <section className="sec soft">
