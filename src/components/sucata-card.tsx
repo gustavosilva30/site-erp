@@ -1,9 +1,10 @@
 import Link from 'next/link'
 import type { SucataCard } from '@/lib/api'
+import { formatEngine } from '@/lib/format'
 import { sucataPath } from '@/lib/slug'
 
 export function SucataCardView({ sucata, prioridade = false }: { sucata: SucataCard; prioridade?: boolean }) {
-  const meta = [sucata.year, sucata.fuel, sucata.engine].filter(Boolean).join(' · ')
+  const meta = [sucata.year, sucata.fuel, formatEngine(sucata.engine)].filter(Boolean).join(' · ')
   return (
     <div className="card sucata-card-v2">
       <Link href={sucataPath(sucata)} className="card-top">
