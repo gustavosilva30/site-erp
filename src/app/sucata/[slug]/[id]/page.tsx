@@ -38,7 +38,7 @@ export default async function Sucata({ params }: Props) {
   const origem = await siteOrigin()
   const nome = `${s.title}${s.year ? ` ${s.year}` : ''}`
   const wa = whatsappLink(store.whatsapp, `Olá! Vim pelo site da ${store.name} e quero saber das peças do ${nome}.`)
-  const dados: [string, string | null][] = [['Ano', s.year || null], ['Cor', s.color], ['Combustível', s.fuel], ['Motor', formatEngine(s.engine)]]
+  const dados: [string, string | null][] = [['Ano', s.year || null], ['Cor', s.color], ['Combustível', s.fuel], ['Motor', formatEngine(s.engine)], ['Câmbio', s.transmission || null]]
   const trilha: { label: string; href?: string }[] = [{ label: 'Início', href: '/' }, { label: 'Sucatas', href: '/sucatas' }, { label: nome }]
 
   return (

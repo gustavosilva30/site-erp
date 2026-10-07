@@ -102,6 +102,7 @@ export interface SucataCard {
   color: string | null
   fuel: string | null
   engine: string | null
+  transmission?: string | null
   photo: string | null
   parts_count: number
   updated_at: string | null
