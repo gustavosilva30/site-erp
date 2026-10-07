@@ -143,9 +143,13 @@ button, input, select { font: inherit; }
 .product-card-v2, .sucata-card-v2 { background: #fff; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; transition: transform .15s, box-shadow .15s; }
 .product-card-v2:hover, .sucata-card-v2:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(0,0,0,0.08); border-color: #cbd5e1; }
 .card-top { display: flex; flex-direction: column; height: 100%; color: inherit; text-decoration: none; }
-.product-card-v2 .ph, .sucata-card-v2 .ph { position: relative; background: var(--photo); width: 100%; aspect-ratio: 4 / 3; overflow: hidden; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 13px; }
-.product-card-v2 .ph img, .sucata-card-v2 .ph img { width: 100%; height: 100%; object-fit: cover; transition: transform .25s; }
-.product-card-v2:hover .ph img, .sucata-card-v2:hover .ph img { transform: scale(1.04); }
+.product-card-v2 .ph { position: relative; background: #f8fafc; width: 100%; aspect-ratio: 4 / 3; padding: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 13px; }
+.product-card-v2 .ph img { width: 100%; height: 100%; object-fit: contain; transition: transform .25s; }
+.product-card-v2:hover .ph img { transform: scale(1.04); }
+
+.sucata-card-v2 .ph { position: relative; background: var(--photo); width: 100%; aspect-ratio: 4 / 3; overflow: hidden; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 13px; }
+.sucata-card-v2 .ph img { width: 100%; height: 100%; object-fit: cover; transition: transform .25s; }
+.sucata-card-v2:hover .ph img { transform: scale(1.04); }
 
 .card-badges { position: absolute; top: 8px; left: 8px; right: 8px; display: flex; gap: 6px; flex-wrap: wrap; pointer-events: none; z-index: 2; }
 .badge { border-radius: 6px; padding: 3px 8px; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; }
