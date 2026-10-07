@@ -5,29 +5,60 @@ import { CartLink } from './cart-link'
 
 export function Header({ store }: { store: Store }) {
   const wa = whatsappLink(store.whatsapp, store.whatsapp_message)
+  const frete = store.trust?.shipping_text || 'Enviamos para todo o Brasil'
+  const credencial = store.trust?.credential_text
+  const cidade = store.city ? `${store.city}${store.state ? ` - ${store.state}` : ''}` : null
+
   return (
     <header className="top">
-      <div className="wrap">
-        <div className="row">
-          <Link href="/" className="brand">
-            {store.logo_url
-              ? <img src={store.logo_url} alt={store.name} />
-              : <span className="logo-fallback">{store.name.slice(0, 1)}</span>}
-            {/* A logo da empresa ja traz o nome; sem logo, o nome aparece em texto. */}
-            <span className={store.logo_url ? 'sr-only' : undefined}>{store.name}</span>
-          </Link>
-          <form action="/produtos" className="search" role="search">
-            <input name="q" placeholder="Buscar peça, código ou carro" aria-label="Buscar peça" maxLength={80} />
-            <button className="btn sm" type="submit">Buscar</button>
-          </form>
-          {wa && <a className="btn wa sm" href={wa} target="_blank" rel="noopener noreferrer">WhatsApp</a>}
-          <CartLink />
+      {/* Top Bar de Atendimento e Confiança */}
+      <div className="topbar">
+        <div className="wrap topbar-inner">
+          <div className="topbar-items">
+            <span>📦 {frete}</span>
+            <span>💬 Atendimento rápido via WhatsApp</span>
+            {cidade && <span>📍 Loja Física em {cidade}</span>}
+            {credencial && <span className="topbar-cred">🛡️ {credencial}</span>}
+          </div>
+          {store.hours && <div className="topbar-hours">🕒 {store.hours}</div>}
         </div>
-        <nav className="nav" aria-label="Principal">
+      </div>
+
+      {/* Main Header Bar */}
+      <div className="wrap">
+        <div className="row main-header-row">
+          <Link href="/" className="brand">
+            {store.logo_url ? (
+              <img src={store.logo_url} alt={store.name} className="brand-logo" />
+            ) : (
+              <span className="logo-fallback">{store.name.slice(0, 1)}</span>
+            )}
+            <span className={store.logo_url ? 'brand-text sr-only' : 'brand-text'}>{store.name}</span>
+          </Link>
+
+          <form action="/produtos" className="search" role="search">
+            <span className="search-icon" aria-hidden>🔍</span>
+            <input name="q" placeholder="Buscar peça, código de fábrica ou carro (ex.: farol sentra)" aria-label="Buscar peça" maxLength={80} />
+            <button className="btn sm search-btn" type="submit">Buscar</button>
+          </form>
+
+          <div className="header-actions">
+            {wa && (
+              <a className="btn wa sm whatsapp-header-btn" href={wa} target="_blank" rel="noopener noreferrer">
+                <span className="wa-icon" aria-hidden>💬</span>
+                <span className="wa-label">Falar com Vendedor</span>
+              </a>
+            )}
+            <CartLink />
+          </div>
+        </div>
+
+        {/* Main Nav Bar */}
+        <nav className="nav" aria-label="Navegação principal">
           <Link href="/">Início</Link>
-          <Link href="/produtos">Peças</Link>
-          {store.has_sucatas && <Link href="/sucatas">Sucatas</Link>}
-          {store.portal_enabled && <Link href="/entrar">Área do cliente</Link>}
+          <Link href="/produtos">Todas as Peças</Link>
+          {store.has_sucatas && <Link href="/sucatas">Veículos em Desmontagem</Link>}
+          {store.portal_enabled && <Link href="/entrar" className="nav-portal-link">👤 Área do Cliente / Entrar</Link>}
         </nav>
       </div>
     </header>

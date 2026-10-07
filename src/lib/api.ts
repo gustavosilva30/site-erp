@@ -14,6 +14,17 @@ export interface Banner {
   link_url: string | null
 }
 
+export interface StoreTrust {
+  shipping_text: string | null
+  installments_max: number | null
+  installments_no_interest: boolean
+  pix_discount_percent: number | null
+  default_warranty_days: number | null
+  credential_text: string | null
+  show_original_badge: boolean
+  tax_id: string | null
+}
+
 export interface Store {
   slug: string
   name: string
@@ -42,6 +53,8 @@ export interface Store {
   has_sucatas: boolean
   /** A empresa ligou o portal do cliente (login e pedidos). */
   portal_enabled: boolean
+  /** Informações de confiança e condições comerciais configuradas pela empresa. */
+  trust?: StoreTrust
 }
 
 export interface ProductCard {
@@ -57,6 +70,7 @@ export interface ProductCard {
   year_start: number | null
   year_end: number | null
   photo: string | null
+  warranty_days?: number | null
 }
 
 export interface ProductDetail extends ProductCard {
@@ -128,10 +142,16 @@ export async function getStore(): Promise<Store> {
   return loja
 }
 
-export async function listProducts(slug: string, params: { q?: string; category?: string; montadora?: string; model?: string; year?: string; page?: number; limit?: number }) {
+export async function listProducts(slug: string, params: { q?: string; category?: string; categories?: string[]; condition?: string; price_min?: number; price_max?: number; montadora?: string; model?: string; year?: string; page?: number; limit?: number }) {
   const qs = new URLSearchParams()
   if (params.q) qs.set('q', params.q)
   if (params.category) qs.set('category', params.category)
+  if (params.categories?.length) {
+    for (const c of params.categories) qs.append('categories', c)
+  }
+  if (params.condition) qs.set('condition', params.condition)
+  if (params.price_min !== undefined) qs.set('price_min', String(params.price_min))
+  if (params.price_max !== undefined) qs.set('price_max', String(params.price_max))
   if (params.montadora) qs.set('montadora', params.montadora)
   if (params.model) qs.set('model', params.model)
   if (params.year) qs.set('year', params.year)

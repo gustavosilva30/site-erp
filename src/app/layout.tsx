@@ -8,7 +8,15 @@ import { ConsentProvider } from '@/lib/consent'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { CookieBanner } from '@/components/cookie-banner'
+import { Plus_Jakarta_Sans } from 'next/font/google'
 import './globals.css'
+
+const sansFont = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-sans',
+})
+
 
 export async function generateMetadata(): Promise<Metadata> {
   const store = await findStore()
@@ -49,8 +57,8 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const origem = await siteOrigin()
   const rua = store.full_address.split(' · ')[0]
   return (
-    <html lang="pt-BR">
-      <body style={{ '--brand': brand } as CSSProperties}>
+    <html lang="pt-BR" className={sansFont.variable}>
+      <body className={sansFont.className} style={{ '--brand': brand } as CSSProperties}>
         <JsonLd data={{
           '@context': 'https://schema.org',
           '@type': 'AutoPartsStore',
