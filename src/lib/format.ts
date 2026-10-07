@@ -5,6 +5,16 @@ export const money = (v: number) => brl.format(v)
 export const whatsappLink = (number: string | null, text: string) =>
   number ? `https://wa.me/${number.replace(/\D/g, '')}?text=${encodeURIComponent(text.slice(0, 1500))}` : null
 
+/** Link de contato dos vendedores da loja: se a empresa ativou a página de vendedores (/contato/<slug>), abre essa página; senão vai direto pro WhatsApp. */
+export const storeContactLink = (
+  store: { whatsapp?: string | null; contact_page_slug?: string | null; contact_sellers_url?: string | null } | null | undefined,
+  defaultMessage: string = ''
+) => {
+  if (store?.contact_sellers_url) return store.contact_sellers_url
+  if (store?.contact_page_slug) return `https://erp.gsntech.com.br/contato/${store.contact_page_slug}`
+  return whatsappLink(store?.whatsapp ?? null, defaultMessage)
+}
+
 /** Peça sem preço cadastrado (zero): a vitrine mostra "Consulte a loja" e o pedido é combinado pelo WhatsApp. */
 export const semPreco = (price: number | null | undefined) => !(Number(price) > 0)
 

@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import type { Store } from '@/lib/api'
-import { whatsappLink } from '@/lib/format'
+import { storeContactLink } from '@/lib/format'
 import { MapEmbed } from './map-embed'
 import { CookiePrefsLink } from './cookie-prefs-link'
+import { DetranBadgeIcon } from './detran-badge'
 
 export const LEGAL_PAGES = [
   { slug: 'privacidade', label: 'Política de Privacidade' },
@@ -13,9 +14,10 @@ export const LEGAL_PAGES = [
 ] as const
 
 const instagramOk = (h: string) => /^[A-Za-z0-9._]{1,40}$/.test(h)
+const facebookUrl = (fb: string) => (/^https?:\/\//i.test(fb) ? fb : `https://www.facebook.com/${fb.replace(/^@/, '')}`)
 
 export function Footer({ store }: { store: Store }) {
-  const wa = whatsappLink(store.whatsapp, store.whatsapp_message)
+  const wa = storeContactLink(store, store.whatsapp_message)
   const legais = LEGAL_PAGES.filter((p) => store.policies?.[p.slug])
   const temEndereco = Boolean(store.full_address)
   const comoChegar = store.map_query ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(store.map_query)}` : null
@@ -34,8 +36,9 @@ export function Footer({ store }: { store: Store }) {
             {cnpj && <p className="foot-tax">CNPJ: {cnpj}</p>}
 
             {credencial && (
-              <div className="foot-badge-cred">
-                <span>🛡️ {credencial}</span>
+              <div className="foot-badge-cred inline-flex items-center gap-2">
+                <DetranBadgeIcon className="h-5 w-5 shrink-0" />
+                <span>{credencial}</span>
               </div>
             )}
 
@@ -52,7 +55,7 @@ export function Footer({ store }: { store: Store }) {
               {wa && (
                 <li>
                   <a href={wa} target="_blank" rel="noopener noreferrer" className="foot-wa">
-                    💬 WhatsApp da Loja
+                    💬 Falar com Vendedor / WhatsApp
                   </a>
                 </li>
               )}
@@ -67,6 +70,13 @@ export function Footer({ store }: { store: Store }) {
                 <li>
                   <a href={`https://www.instagram.com/${store.instagram}`} target="_blank" rel="noopener noreferrer">
                     📷 Instagram @{store.instagram}
+                  </a>
+                </li>
+              )}
+              {store.facebook && store.facebook.trim() && (
+                <li>
+                  <a href={facebookUrl(store.facebook.trim())} target="_blank" rel="noopener noreferrer">
+                    📘 Facebook
                   </a>
                 </li>
               )}

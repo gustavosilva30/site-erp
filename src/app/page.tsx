@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { getFacets, getStore, listCategories, listProducts, listSucatas } from '@/lib/api'
-import { whatsappLink } from '@/lib/format'
+import { storeContactLink } from '@/lib/format'
 import { marcaPath } from '@/lib/slug'
 import { cidadeDe } from '@/lib/seo'
 import { ProductCardView } from '@/components/product-card'
@@ -18,7 +18,7 @@ export default async function Home() {
     getFacets(store.slug),
     store.has_sucatas ? listSucatas(store.slug, 1, 3) : Promise.resolve(null),
   ])
-  const wa = whatsappLink(store.whatsapp, store.whatsapp_message)
+  const wa = storeContactLink(store, store.whatsapp_message)
 
   return (
     <main>

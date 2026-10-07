@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { notFound, permanentRedirect } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getProduct, getStore } from '@/lib/api'
-import { mensagemConsulta, money, semPreco, whatsappLink, years } from '@/lib/format'
+import { mensagemConsulta, money, semPreco, storeContactLink, years } from '@/lib/format'
 import { categoriaPath, marcaPath, pecaPath, slugify, sucataPath } from '@/lib/slug'
 import { cidadeDe, descricaoPeca, siteOrigin, tituloPeca } from '@/lib/seo'
 import { AddToCart } from '@/components/add-to-cart'
@@ -53,8 +53,8 @@ export default async function Peca({ params }: Props) {
     ['Motor', p.engine],
     ['Garantia', p.warranty_days ? `${p.warranty_days} dias` : null],
   ]
-  const wa = whatsappLink(
-    store.whatsapp,
+  const wa = storeContactLink(
+    store,
     consulta
       ? mensagemConsulta(store.name, p)
       : `Olá! Vim pelo site da ${store.name} e tenho interesse na peça: ${p.title}${p.sku ? ` (cód. ${p.sku})` : ''} - ${money(p.price)}. Ainda está disponível?`,

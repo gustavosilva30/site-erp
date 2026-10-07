@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { ProductCard as Product, StoreTrust } from '@/lib/api'
-import { mensagemConsulta, money, semPreco, whatsappLink } from '@/lib/format'
+import { mensagemConsulta, money, semPreco, storeContactLink } from '@/lib/format'
 import { pecaPath } from '@/lib/slug'
 import { AddToCart } from './add-to-cart'
 
@@ -9,14 +9,20 @@ export function ProductCardView({
   whatsapp,
   storeName,
   trust,
+  contactPageSlug,
+  contactSellersUrl,
 }: {
   product: Product
   whatsapp: string | null
   storeName: string
   trust?: StoreTrust
+  contactPageSlug?: string | null
+  contactSellersUrl?: string | null
 }) {
   const consulta = semPreco(product.price)
-  const link = consulta ? whatsappLink(whatsapp, mensagemConsulta(storeName, product)) : null
+  const link = consulta
+    ? storeContactLink({ whatsapp, contact_page_slug: contactPageSlug, contact_sellers_url: contactSellersUrl }, mensagemConsulta(storeName, product))
+    : null
 
   // Badges e informações de confiança
   const condicao = product.condition === 'novo' ? 'Novo' : product.condition === 'revisado' ? 'Revisado' : 'Usado'

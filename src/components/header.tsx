@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import type { Store } from '@/lib/api'
-import { whatsappLink } from '@/lib/format'
+import { storeContactLink } from '@/lib/format'
 import { CartLink } from './cart-link'
+import { DetranBadgeIcon } from './detran-badge'
 
 export function Header({ store }: { store: Store }) {
-  const wa = whatsappLink(store.whatsapp, store.whatsapp_message)
+  const wa = storeContactLink(store, store.whatsapp_message)
   const frete = store.trust?.shipping_text || 'Enviamos para todo o Brasil'
   const credencial = store.trust?.credential_text
   const cidade = store.city ? `${store.city}${store.state ? ` - ${store.state}` : ''}` : null
@@ -18,7 +19,12 @@ export function Header({ store }: { store: Store }) {
             <span>📦 {frete}</span>
             <span>💬 Atendimento rápido via WhatsApp</span>
             {cidade && <span>📍 Loja Física em {cidade}</span>}
-            {credencial && <span className="topbar-cred">🛡️ {credencial}</span>}
+            {credencial && (
+              <span className="topbar-cred inline-flex items-center gap-1.5">
+                <DetranBadgeIcon className="h-4 w-4 shrink-0" />
+                {credencial}
+              </span>
+            )}
           </div>
           {store.hours && <div className="topbar-hours">🕒 {store.hours}</div>}
         </div>

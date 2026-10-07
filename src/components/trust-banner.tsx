@@ -1,9 +1,9 @@
 import type { Store } from '@/lib/api'
-import { whatsappLink } from '@/lib/format'
+import { storeContactLink } from '@/lib/format'
 
 /** Cards de benefícios rápidos e proposta de valor exibidos na página inicial e destaque do catálogo */
 export function TrustBanner({ store }: { store: Store }) {
-  const wa = whatsappLink(store.whatsapp, 'Olá! Gostaria de tirar uma dúvida sobre compatibilidade de peças.')
+  const wa = storeContactLink(store, 'Olá! Gostaria de tirar uma dúvida sobre compatibilidade de peças.')
   const frete = store.trust?.shipping_text || 'Enviamos para todo o Brasil com segurança'
   const garantiaDias = store.trust?.default_warranty_days || 90
 

@@ -37,6 +37,10 @@ export interface Store {
   address: string
   hours: string
   instagram: string
+  facebook?: string | null
+  contact_page_slug?: string | null
+  contact_page_enabled?: boolean
+  contact_sellers_url?: string | null
   primary_color: string
   /** Endereço mostrado no rodapé (o digitado na loja ou o do cadastro da empresa) e a consulta do mapa. */
   full_address: string
