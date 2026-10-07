@@ -139,8 +139,8 @@ export function ProductSidebar({ categories, facets, showDepartments = true, cur
         <span className="sidebar-title">Condição da peça</span>
         <div className="sidebar-chips">
           <Link href={buildUrl({ condition: undefined })} className={`chip ${!current.condition ? 'on' : ''}`}>Todas</Link>
-          <Link href={buildUrl({ condition: 'usado' })} className={`chip ${current.condition === 'usado' ? 'on' : ''}`}>Usado / Testado</Link>
-          <Link href={buildUrl({ condition: 'novo' })} className={`chip ${current.condition === 'novo' ? 'on' : ''}`}>Novo / Genuíno</Link>
+          <Link href={buildUrl({ condition: 'usado' })} className={`chip ${current.condition === 'usado' ? 'on' : ''}`}>Usado</Link>
+          <Link href={buildUrl({ condition: 'novo' })} className={`chip ${current.condition === 'novo' ? 'on' : ''}`}>Novo</Link>
         </div>
       </div>
 
@@ -186,16 +186,25 @@ export function ProductSidebar({ categories, facets, showDepartments = true, cur
             <Link href={buildUrl({ montadora: undefined, model: undefined })} className={`sidebar-item ${!current.montadora ? 'on' : ''}`}>
               <span>Todas as marcas</span>
             </Link>
-            {montadorasDeduplicadas.map((m) => (
-              <Link
-                key={m.name}
-                href={buildUrl({ montadora: current.montadora?.toLowerCase() === m.name.toLowerCase() ? undefined : m.name, model: undefined })}
-                className={`sidebar-item ${current.montadora?.toLowerCase() === m.name.toLowerCase() ? 'on' : ''}`}
-              >
-                <span>{m.name}</span>
-                <span className="count">{m.total}</span>
-              </Link>
-            ))}
+            {montadorasDeduplicadas.map((m) => {
+              const isSelected = current.montadora?.toLowerCase() === m.name.toLowerCase()
+              return (
+                <Link
+                  key={m.name}
+                  href={buildUrl({
+                    montadora: isSelected ? undefined : m.name,
+                    model: undefined,
+                    q: undefined,
+                    category: undefined,
+                    categories: undefined,
+                  })}
+                  className={`sidebar-item ${isSelected ? 'on' : ''}`}
+                >
+                  <span>{m.name}</span>
+                  <span className="count">{m.total}</span>
+                </Link>
+              )
+            })}
           </div>
         </div>
       )}

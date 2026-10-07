@@ -19,9 +19,9 @@ export function ProductCardView({
   const link = consulta ? whatsappLink(whatsapp, mensagemConsulta(storeName, product)) : null
 
   // Badges e informações de confiança
-  const condicao = product.condition === 'novo' ? 'Novo' : product.condition === 'revisado' ? 'Revisado' : 'Usado / Testado'
+  const condicao = product.condition === 'novo' ? 'Novo' : product.condition === 'revisado' ? 'Revisado' : 'Usado'
   const garantia = product.warranty_days || trust?.default_warranty_days || null
-  const showOriginal = trust?.show_original_badge
+  const showOriginal = Boolean(trust?.show_original_badge && (product.brand?.toLowerCase().includes('genuin') || product.brand?.toLowerCase().includes('original')))
 
   // Condições de pagamento
   const parcelas = trust?.installments_max && trust.installments_max >= 2 ? trust.installments_max : null
