@@ -53,7 +53,7 @@ export default async function Sucata({ params }: Props) {
         <Gallery photos={s.photos} alt={nome} />
         <div>
           <h1>{nome}</h1>
-          <p className="muted">{s.parts_count > 0 ? `${s.parts_count} ${s.parts_count === 1 ? 'peça deste veículo está' : 'peças deste veículo estão'} em estoque.` : 'No momento não há peças deste veículo em estoque.'}</p>
+          <p className="muted">{s.parts_count > 0 ? `${s.parts_count} ${s.parts_count === 1 ? 'peça deste veículo está' : 'peças deste veículo estão'} em estoque.` : 'Sucata ainda montada no pátio.'}</p>
           {wa && <div className="row"><a className="btn wa" href={wa} target="_blank" rel="noopener noreferrer">Perguntar das peças no WhatsApp</a></div>}
           <table className="specs">
             <tbody>{dados.filter(([, v]) => v).map(([k, v]) => <tr key={k}><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody>
