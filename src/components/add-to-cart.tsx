@@ -1,12 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { useCart } from '@/lib/cart'
+import { useCartOptional } from '@/lib/cart'
 import type { ProductCard } from '@/lib/api'
 import { CartIcon, CheckIcon } from './icons'
 
 export function AddToCart({ product, small = false }: { product: ProductCard; small?: boolean }) {
-  const { add } = useCart()
+  const cart = useCartOptional()
   const [added, setAdded] = useState(false)
 
   return (
@@ -14,7 +14,7 @@ export function AddToCart({ product, small = false }: { product: ProductCard; sm
       type="button"
       className={`btn add-to-cart-btn ${added ? 'added' : ''}${small ? ' sm full-w' : ''}`}
       onClick={() => {
-        add({ id: product.id, title: product.title, price: product.price, photo: product.photo, sku: product.sku })
+        cart?.add({ id: product.id, title: product.title, price: product.price, photo: product.photo, sku: product.sku })
         setAdded(true)
         setTimeout(() => setAdded(false), 1600)
       }}

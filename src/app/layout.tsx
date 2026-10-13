@@ -78,9 +78,9 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             <Header store={store} />
             {children}
             <Footer store={store} />
+            <MobileBottomNav whatsapp={store.whatsapp} storeName={store.name} />
           </CartProvider>
           <FloatingWhatsApp whatsapp={store.whatsapp} storeName={store.name} />
-          <MobileBottomNav whatsapp={store.whatsapp} storeName={store.name} />
           <CookieBanner hasCookiePolicy={Boolean(store.policies?.cookies)} hasPrivacyPolicy={Boolean(store.policies?.privacidade)} />
         </ConsentProvider>
       </body>

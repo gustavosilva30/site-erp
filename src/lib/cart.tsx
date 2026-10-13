@@ -72,3 +72,7 @@ export function useCart() {
   if (!ctx) throw new Error('useCart fora do CartProvider')
   return ctx
 }
+
+export function useCartOptional() {
+  return useContext(Ctx)
+}

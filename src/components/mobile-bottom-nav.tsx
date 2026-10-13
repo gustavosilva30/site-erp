@@ -2,12 +2,18 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useCart } from '@/lib/cart'
+import { useCartOptional } from '@/lib/cart'
+import { usePortalCartOptional } from '@/lib/portal-cart'
 import { CarIcon, SearchIcon, CartIcon, WhatsAppIcon } from './icons'
 
 export function MobileBottomNav({ whatsapp, storeName }: { whatsapp: string | null; storeName: string }) {
   const pathname = usePathname()
-  const { count } = useCart()
+  const publicCart = useCartOptional()
+  const portalCtx = usePortalCartOptional()
+
+  const ePortal = pathname.startsWith('/conta')
+  const count = ePortal ? (portalCtx?.count ?? 0) : (publicCart?.count ?? 0)
+  const cartHref = ePortal ? '/conta/carrinho' : '/carrinho'
 
   const waMsg = encodeURIComponent(`Olá! Vim pelo site da ${storeName} e gostaria de tirar uma dúvida sobre uma peça.`)
   const waUrl = whatsapp ? `https://wa.me/${whatsapp.replace(/\D/g, '')}?text=${waMsg}` : null
@@ -28,8 +34,8 @@ export function MobileBottomNav({ whatsapp, storeName }: { whatsapp: string | nu
       </Link>
 
       <Link
-        href="/carrinho"
-        className={`bottom-nav-item ${pathname.startsWith('/carrinho') ? 'active' : ''}`}
+        href={cartHref}
+        className={`bottom-nav-item ${pathname.startsWith(cartHref) ? 'active' : ''}`}
       >
         <span className="bottom-nav-cart-wrapper">
           <CartIcon className="bottom-nav-icon" />
