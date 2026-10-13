@@ -10,6 +10,7 @@ import { Gallery } from '@/components/gallery'
 import { JsonLd } from '@/components/json-ld'
 import { Breadcrumb } from '@/components/listing'
 import { ProductCardView } from '@/components/product-card'
+import { ShieldCheckIcon, CheckIcon, StarIcon, WhatsAppIcon } from '@/components/icons'
 
 type Props = { params: Promise<{ slug: string; id: string }> }
 
@@ -107,9 +108,26 @@ export default async function Peca({ params }: Props) {
           </div>
 
           <ul className="trust" aria-label="Informações da loja">
-            {p.warranty_days ? <li>✔ Garantia de {p.warranty_days} dias</li> : null}
-            {p.condition === 'usado' && <li>♻ Peça usada, retirada de veículo desmontado</li>}
-            {store.google_reviews_url && <li><a href={store.google_reviews_url} target="_blank" rel="noopener noreferrer">★ Ver avaliações no Google</a></li>}
+            {p.warranty_days ? (
+              <li>
+                <ShieldCheckIcon className="trust-li-icon text-emerald-500" />
+                <span>Garantia de <strong>{p.warranty_days} dias</strong></span>
+              </li>
+            ) : null}
+            {p.condition === 'usado' && (
+              <li>
+                <CheckIcon className="trust-li-icon text-blue-500" />
+                <span>Peça original usada, testada e com baixa no Detran</span>
+              </li>
+            )}
+            {store.google_reviews_url && (
+              <li>
+                <StarIcon className="trust-li-icon text-amber-500" />
+                <a href={store.google_reviews_url} target="_blank" rel="noopener noreferrer">
+                  Avaliações verificadas no Google
+                </a>
+              </li>
+            )}
           </ul>
 
           <table className="specs">
@@ -117,8 +135,8 @@ export default async function Peca({ params }: Props) {
           </table>
 
           {p.compatibility.length > 0 && (
-            <section aria-labelledby="serve-em">
-              <h2 id="serve-em" className="h3">Serve em</h2>
+            <section aria-labelledby="serve-em" className="compat-section">
+              <h2 id="serve-em" className="h3">Compatibilidade Confirmada</h2>
               <ul className="compat">
                 {p.compatibility.map((c, i) => {
                   const a = c.year_start ? (c.year_end && c.year_end !== c.year_start ? `${c.year_start}-${c.year_end}` : String(c.year_start)) : ''
@@ -149,8 +167,14 @@ export default async function Peca({ params }: Props) {
 
       {wa && (
         <div className="stickybar" role="region" aria-label="Falar com a loja">
-          <span className="price">{consulta ? 'Consulte a loja' : money(p.price)}</span>
-          <a className="btn wa" href={wa} target="_blank" rel="noopener noreferrer">{consulta ? 'Consultar' : 'Chamar no WhatsApp'}</a>
+          <div className="stickybar-info">
+            <span className="stickybar-label">Total da Peça</span>
+            <span className="price">{consulta ? 'Sob consulta' : money(p.price)}</span>
+          </div>
+          <a className="btn wa stickybar-btn" href={wa} target="_blank" rel="noopener noreferrer">
+            <WhatsAppIcon className="wa-svg-icon" />
+            <span>{consulta ? 'Consultar Preço' : 'Chamar no WhatsApp'}</span>
+          </a>
         </div>
       )}
     </main>

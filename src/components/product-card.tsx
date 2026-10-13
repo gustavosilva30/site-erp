@@ -3,6 +3,7 @@ import type { ProductCard as Product, StoreTrust } from '@/lib/api'
 import { mensagemConsulta, money, semPreco, storeContactLink } from '@/lib/format'
 import { pecaPath } from '@/lib/slug'
 import { AddToCart } from './add-to-cart'
+import { ShieldCheckIcon, WhatsAppIcon } from './icons'
 
 export function ProductCardView({
   product,
@@ -25,7 +26,7 @@ export function ProductCardView({
     : null
 
   // Badges e informações de confiança
-  const condicao = product.condition === 'novo' ? 'Novo' : product.condition === 'revisado' ? 'Revisado' : 'Usado'
+  const condicao = product.condition === 'novo' ? 'Novo' : product.condition === 'revisado' ? 'Revisado' : 'Original Usada'
   const garantia = product.warranty_days || trust?.default_warranty_days || null
   const showOriginal = Boolean(trust?.show_original_badge && (product.brand?.toLowerCase().includes('genuin') || product.brand?.toLowerCase().includes('original')))
 
@@ -42,7 +43,9 @@ export function ProductCardView({
           {product.photo ? (
             <img src={product.photo} alt={product.title} loading="lazy" decoding="async" />
           ) : (
-            <span className="nophoto">Sem foto</span>
+            <div className="nophoto">
+              <span>Sem foto disponível</span>
+            </div>
           )}
 
           {/* Badges no topo da imagem */}
@@ -51,25 +54,39 @@ export function ProductCardView({
             <span className={`badge cond ${product.condition === 'novo' ? 'novo' : 'usado'}`}>{condicao}</span>
           </div>
 
-          {garantia && <span className="badge warranty">🛡️ {garantia} dias garantia</span>}
+          {garantia && (
+            <span className="badge warranty">
+              <ShieldCheckIcon className="badge-icon-svg" />
+              <span>{garantia} dias garantia</span>
+            </span>
+          )}
         </div>
 
         <div className="card-body">
-          <div className="t">{product.title}</div>
+          <div className="card-status-line">
+            <span className="stock-pill">
+              <span className="stock-dot" />
+              <span>Em estoque</span>
+            </span>
+          </div>
+
+          <div className="t" title={product.title}>{product.title}</div>
           <div className="m">
-            {[product.montadora, product.model, product.sku ? `cód. ${product.sku}` : null].filter(Boolean).join(' · ')}
+            {[product.montadora, product.model, product.sku ? `Cód. ${product.sku}` : null].filter(Boolean).join(' · ')}
           </div>
 
           {/* Preço e condições */}
           <div className="card-pricing">
             {consulta ? (
-              <span className="price-consult">Consulte a loja</span>
+              <span className="price-consult">Sob consulta</span>
             ) : (
               <>
                 <div className="price-main">{money(product.price)}</div>
                 {precoPix && (
                   <div className="price-pix">
-                    <strong>{money(precoPix)}</strong> no Pix <span className="disc">({descPix}% off)</span>
+                    <span className="pix-tag">⚡ PIX</span>
+                    <strong>{money(precoPix)}</strong>
+                    <span className="disc">({descPix}% off)</span>
                   </div>
                 )}
                 {parcelas && (
@@ -87,7 +104,8 @@ export function ProductCardView({
         {consulta ? (
           link ? (
             <a className="btn sm wa full-w" href={link} target="_blank" rel="noopener noreferrer">
-              💬 Consultar no WhatsApp
+              <WhatsAppIcon className="wa-svg-icon" />
+              <span>Consultar WhatsApp</span>
             </a>
           ) : (
             <Link className="btn sm full-w" href={pecaPath(product)}>

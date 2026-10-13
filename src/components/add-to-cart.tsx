@@ -3,21 +3,33 @@
 import { useState } from 'react'
 import { useCart } from '@/lib/cart'
 import type { ProductCard } from '@/lib/api'
+import { CartIcon, CheckIcon } from './icons'
 
 export function AddToCart({ product, small = false }: { product: ProductCard; small?: boolean }) {
   const { add } = useCart()
   const [added, setAdded] = useState(false)
+
   return (
     <button
       type="button"
-      className={`btn${small ? ' sm' : ''}`}
+      className={`btn add-to-cart-btn ${added ? 'added' : ''}${small ? ' sm full-w' : ''}`}
       onClick={() => {
         add({ id: product.id, title: product.title, price: product.price, photo: product.photo, sku: product.sku })
         setAdded(true)
-        setTimeout(() => setAdded(false), 1500)
+        setTimeout(() => setAdded(false), 1600)
       }}
     >
-      {added ? 'Adicionado' : 'Adicionar'}
+      {added ? (
+        <>
+          <CheckIcon className="btn-icon text-emerald-300" />
+          <span>Adicionado!</span>
+        </>
+      ) : (
+        <>
+          <CartIcon className="btn-icon" />
+          <span>Comprar</span>
+        </>
+      )}
     </button>
   )
 }

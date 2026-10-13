@@ -8,6 +8,7 @@ import { Gallery } from '@/components/gallery'
 import { JsonLd } from '@/components/json-ld'
 import { Breadcrumb } from '@/components/listing'
 import { ProductCardView } from '@/components/product-card'
+import { WhatsAppIcon } from '@/components/icons'
 
 type Props = { params: Promise<{ slug: string; id: string }> }
 
@@ -54,7 +55,14 @@ export default async function Sucata({ params }: Props) {
         <div>
           <h1>{nome}</h1>
           <p className="muted">{s.parts_count > 0 ? `${s.parts_count} ${s.parts_count === 1 ? 'peça deste veículo está' : 'peças deste veículo estão'} em estoque.` : 'Sucata ainda montada no pátio.'}</p>
-          {wa && <div className="row"><a className="btn wa" href={wa} target="_blank" rel="noopener noreferrer">Perguntar das peças no WhatsApp</a></div>}
+          {wa && (
+            <div className="row">
+              <a className="btn wa" href={wa} target="_blank" rel="noopener noreferrer">
+                <WhatsAppIcon className="wa-svg-icon" />
+                <span>Perguntar das peças no WhatsApp</span>
+              </a>
+            </div>
+          )}
           <table className="specs">
             <tbody>{dados.filter(([, v]) => v).map(([k, v]) => <tr key={k}><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody>
           </table>
@@ -70,8 +78,14 @@ export default async function Sucata({ params }: Props) {
 
       {wa && (
         <div className="stickybar" role="region" aria-label="Falar com a loja">
-          <span className="price" style={{ fontSize: '.95rem' }}>{s.parts_count} {s.parts_count === 1 ? 'peça' : 'peças'}</span>
-          <a className="btn wa" href={wa} target="_blank" rel="noopener noreferrer">Chamar no WhatsApp</a>
+          <div className="stickybar-info">
+            <span className="stickybar-label">Veículo no Pátio</span>
+            <span className="price" style={{ fontSize: '.95rem' }}>{s.parts_count} {s.parts_count === 1 ? 'peça' : 'peças'}</span>
+          </div>
+          <a className="btn wa stickybar-btn" href={wa} target="_blank" rel="noopener noreferrer">
+            <WhatsAppIcon className="wa-svg-icon" />
+            <span>Chamar no WhatsApp</span>
+          </a>
         </div>
       )}
     </main>

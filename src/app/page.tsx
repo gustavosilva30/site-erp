@@ -9,6 +9,8 @@ import { CarFilter } from '@/components/car-filter'
 import { Carousel } from '@/components/carousel'
 import { TrustBanner } from '@/components/trust-banner'
 import { DepartmentsGrid } from '@/components/departments'
+import { ArrowRightIcon, WhatsAppIcon, ShieldCheckIcon, TruckIcon, PackageIcon } from '@/components/icons'
+import { DetranBadgeIcon } from '@/components/detran-badge'
 
 export default async function Home() {
   const store = await getStore()
@@ -26,13 +28,48 @@ export default async function Home() {
       <section className="hero">
         <div className="wrap">
           <div className="hero-text">
-            {store.tagline && <div className="small" style={{ opacity: .8, letterSpacing: 1, textTransform: 'uppercase' }}>{store.tagline}</div>}
+            {store.tagline && (
+              <div className="hero-tagline-badge">
+                <span className="hero-badge-dot" />
+                <span>{store.tagline}</span>
+              </div>
+            )}
             <h1>{store.hero_title}</h1>
-            {store.hero_subtitle && <p style={{ opacity: .85, marginTop: -6, fontSize: 16 }}>{store.hero_subtitle}</p>}
+            {store.hero_subtitle && (
+              <p className="hero-subtitle">{store.hero_subtitle}</p>
+            )}
             {store.show_car_finder !== false && <CarFilter facets={facets} />}
           </div>
+
           <div className={`hero-art${store.banners?.length ? ' has-carousel' : ''}`}>
-            {store.banners?.length ? <Carousel banners={store.banners} /> : (store.address || store.name)}
+            {store.banners?.length ? (
+              <Carousel banners={store.banners} />
+            ) : (
+              <div className="hero-fallback-card">
+                <div className="fallback-badge">
+                  <DetranBadgeIcon className="h-6 w-6" />
+                  <span>Desmanche Credenciado</span>
+                </div>
+                <h3>{store.name}</h3>
+                <p className="fallback-desc">
+                  Peças automotivas originais, testadas e com procedência comprovada por nota fiscal e baixa no Detran.
+                </p>
+                <div className="fallback-stats">
+                  <div className="stat-item">
+                    <ShieldCheckIcon className="stat-icon text-emerald-400" />
+                    <span>90 Dias de Garantia</span>
+                  </div>
+                  <div className="stat-item">
+                    <TruckIcon className="stat-icon text-blue-400" />
+                    <span>Envio Brasil</span>
+                  </div>
+                  <div className="stat-item">
+                    <PackageIcon className="stat-icon text-amber-400" />
+                    <span>Estoque Rastreável</span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -46,12 +83,21 @@ export default async function Home() {
       {/* Destaques do Catálogo */}
       <section className="sec soft">
         <div className="wrap">
-          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 16 }}>
-            <h2 className="h2" style={{ margin: 0 }}>Peças em Destaque</h2>
-            <Link href="/produtos" className="btn ghost sm">Ver todas →</Link>
+          <div className="section-header-row">
+            <div>
+              <h2 className="h2" style={{ margin: 0 }}>Peças em Destaque</h2>
+              <p className="muted small" style={{ margin: '4px 0 0' }}>Peças selecionadas com garantia de funcionamento</p>
+            </div>
+            <Link href="/produtos" className="btn ghost sm view-all-btn">
+              <span>Ver todas</span>
+              <ArrowRightIcon className="inline-icon" />
+            </Link>
           </div>
           {destaques.products.length === 0 ? (
-            <p className="muted">Nenhuma peça disponível no momento.</p>
+            <div className="empty-notice-card">
+              <PackageIcon className="empty-icon" />
+              <p className="muted">Nenhuma peça em destaque no momento.</p>
+            </div>
           ) : (
             <div className="grid">
               {destaques.products.map((p) => (
@@ -66,12 +112,19 @@ export default async function Home() {
       {sucatas && sucatas.sucatas.length > 0 && (
         <section className="sec">
           <div className="wrap">
-            <h2 className="h2">Carros em Desmontagem / Sucatas</h2>
-            <p className="muted" style={{ marginTop: -8, marginBottom: 16 }}>
-              Veículos no pátio aguardando desmontagem. Consulte e solicite a peça que você precisa diretamente.
-            </p>
+            <div className="section-header-row">
+              <div>
+                <h2 className="h2" style={{ margin: 0 }}>Carros em Desmontagem / Sucatas</h2>
+                <p className="muted small" style={{ margin: '4px 0 0' }}>
+                  Veículos no pátio aguardando desmontagem. Solicite a peça diretamente da sucata doadora.
+                </p>
+              </div>
+              <Link href="/sucatas" className="btn ghost sm view-all-btn">
+                <span>Ver todas as sucatas</span>
+                <ArrowRightIcon className="inline-icon" />
+              </Link>
+            </div>
             <div className="grid">{sucatas.sucatas.map((s) => <SucataCardView key={s.id} sucata={s} />)}</div>
-            <p style={{ marginTop: 18 }}><Link href="/sucatas" className="btn ghost">Ver todas as sucatas →</Link></p>
           </div>
         </section>
       )}
@@ -81,8 +134,12 @@ export default async function Home() {
         <section className="sec soft">
           <div className="wrap">
             <h2 className="h2">Peças por Marca{store.city ? ` em ${cidadeDe(store)}` : ''}</h2>
-            <div className="filters">
-              {facets.montadoras.slice(0, 16).map((m) => <Link key={m.name} href={marcaPath(m.name)} className="chip">{m.name}</Link>)}
+            <div className="filters brand-chips-grid">
+              {facets.montadoras.slice(0, 16).map((m) => (
+                <Link key={m.name} href={marcaPath(m.name)} className="chip brand-chip">
+                  <span>{m.name}</span>
+                </Link>
+              ))}
             </div>
           </div>
         </section>
@@ -91,12 +148,17 @@ export default async function Home() {
       {/* Call to Action WhatsApp */}
       {wa && (
         <section className="cta">
-          <div className="wrap">
-            <div>
-              <b>Não encontrou a peça que precisa?</b>
-              <span style={{ opacity: .8, display: 'block', fontSize: 14 }}>Fale diretamente com nossa equipe de vendas no WhatsApp. Procuramos no estoque para você!</span>
+          <div className="wrap cta-wrap">
+            <div className="cta-content">
+              <b>Não encontrou a peça exata que você precisa?</b>
+              <span className="cta-sub">
+                Nossa equipe de vendas consulta o estoque físico no pátio em tempo real para você!
+              </span>
             </div>
-            <a className="btn wa" href={wa} target="_blank" rel="noopener noreferrer">💬 Chamar no WhatsApp</a>
+            <a className="btn wa cta-btn" href={wa} target="_blank" rel="noopener noreferrer">
+              <WhatsAppIcon className="wa-svg-icon" />
+              <span>Chamar Vendedor no WhatsApp</span>
+            </a>
           </div>
         </section>
       )}
