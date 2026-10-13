@@ -10,7 +10,9 @@ import { Gallery } from '@/components/gallery'
 import { JsonLd } from '@/components/json-ld'
 import { Breadcrumb } from '@/components/listing'
 import { ProductCardView } from '@/components/product-card'
-import { ShieldCheckIcon, CheckIcon, StarIcon, WhatsAppIcon } from '@/components/icons'
+import { ShieldCheckIcon, CheckIcon, StarIcon, WhatsAppIcon, ArrowRightIcon } from '@/components/icons'
+import { DetranBadgeIcon } from '@/components/detran-badge'
+import { ShippingCalculator } from '@/components/shipping-calculator'
 
 type Props = { params: Promise<{ slug: string; id: string }> }
 
@@ -134,6 +136,27 @@ export default async function Peca({ params }: Props) {
             <tbody>{linhas.filter(([, v]) => v).map(([k, v]) => <tr key={k}><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody>
           </table>
 
+          {/* Calculadora de Frete e Prazos */}
+          <ShippingCalculator productTitle={p.title} sku={p.sku} whatsapp={store.whatsapp} />
+
+          {/* Card de Veículo Doador (Procedência e Baixa no Detran) */}
+          {p.sucata && (
+            <div className="donor-vehicle-card">
+              <div className="donor-badge">
+                <DetranBadgeIcon className="h-5 w-5" />
+                <span>Veículo Doador Oficial</span>
+              </div>
+              <strong className="donor-title">{p.sucata.title}</strong>
+              <p className="donor-desc">
+                Esta peça original foi retirada deste veículo em processo de desmontagem legal no pátio da loja.
+              </p>
+              <Link className="btn sm ghost donor-btn" href={sucataPath(p.sucata)}>
+                <span>Ver todas as peças deste veículo</span>
+                <ArrowRightIcon className="inline-icon" />
+              </Link>
+            </div>
+          )}
+
           {p.compatibility.length > 0 && (
             <section aria-labelledby="serve-em" className="compat-section">
               <h2 id="serve-em" className="h3">Compatibilidade Confirmada</h2>
@@ -148,7 +171,6 @@ export default async function Peca({ params }: Props) {
           )}
 
           {p.description && <p className="muted" style={{ whiteSpace: 'pre-line' }}>{p.description}</p>}
-          {p.sucata && <p className="small">Esta peça veio do veículo <Link className="foot-link" href={sucataPath(p.sucata)}>{p.sucata.title}</Link>. Veja as outras peças dele.</p>}
           {(p.montadora || store.city) && (
             <p className="muted small">
               {p.montadora && <><Link className="foot-link" href={p.model ? marcaPath(p.montadora, p.model) : marcaPath(p.montadora)}>Mais peças {[p.montadora, p.model].filter(Boolean).join(' ')}</Link>{store.city ? ' · ' : ''}</>}

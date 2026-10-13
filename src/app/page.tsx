@@ -9,8 +9,9 @@ import { CarFilter } from '@/components/car-filter'
 import { Carousel } from '@/components/carousel'
 import { TrustBanner } from '@/components/trust-banner'
 import { DepartmentsGrid } from '@/components/departments'
-import { ArrowRightIcon, WhatsAppIcon, ShieldCheckIcon, TruckIcon, PackageIcon } from '@/components/icons'
+import { ArrowRightIcon, WhatsAppIcon, ShieldCheckIcon, TruckIcon, PackageIcon, SearchIcon } from '@/components/icons'
 import { DetranBadgeIcon } from '@/components/detran-badge'
+import { GoogleReviews } from '@/components/google-reviews'
 
 export default async function Home() {
   const store = await getStore()
@@ -38,7 +39,38 @@ export default async function Home() {
             {store.hero_subtitle && (
               <p className="hero-subtitle">{store.hero_subtitle}</p>
             )}
-            {store.show_car_finder !== false && <CarFilter facets={facets} />}
+            {store.show_car_finder !== false && facets.montadoras.length > 0 ? (
+              <CarFilter facets={facets} />
+            ) : (
+              <div className="hero-quick-actions">
+                <div className="hero-action-buttons">
+                  <Link href="/produtos" className="btn hero-primary-btn">
+                    <SearchIcon className="btn-search-icon" />
+                    <span>Ver Todas as Peças</span>
+                  </Link>
+                  {wa && (
+                    <a href={wa} target="_blank" rel="noopener noreferrer" className="btn wa hero-wa-btn">
+                      <WhatsAppIcon className="wa-svg-icon" />
+                      <span>Consultar no WhatsApp</span>
+                    </a>
+                  )}
+                </div>
+                <div className="hero-trust-pills">
+                  <span className="hero-trust-pill">
+                    <ShieldCheckIcon className="pill-icon text-emerald-400" />
+                    <span>Peças com Baixa no DETRAN</span>
+                  </span>
+                  <span className="hero-trust-pill">
+                    <PackageIcon className="pill-icon text-blue-400" />
+                    <span>Garantia de 90 Dias</span>
+                  </span>
+                  <span className="hero-trust-pill">
+                    <TruckIcon className="pill-icon text-amber-400" />
+                    <span>Envio para Todo o Brasil</span>
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className={`hero-art${store.banners?.length ? ' has-carousel' : ''}`}>
@@ -144,6 +176,9 @@ export default async function Home() {
           </div>
         </section>
       )}
+
+      {/* Prova Social e Avaliações Google */}
+      <GoogleReviews googleReviewsUrl={store.google_reviews_url} storeName={store.name} />
 
       {/* Call to Action WhatsApp */}
       {wa && (

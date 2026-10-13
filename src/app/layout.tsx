@@ -9,6 +9,7 @@ import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { CookieBanner } from '@/components/cookie-banner'
 import { FloatingWhatsApp } from '@/components/floating-whatsapp'
+import { MobileBottomNav } from '@/components/mobile-bottom-nav'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import './globals.css'
 
@@ -79,6 +80,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             <Footer store={store} />
           </CartProvider>
           <FloatingWhatsApp whatsapp={store.whatsapp} storeName={store.name} />
+          <MobileBottomNav whatsapp={store.whatsapp} storeName={store.name} />
           <CookieBanner hasCookiePolicy={Boolean(store.policies?.cookies)} hasPrivacyPolicy={Boolean(store.policies?.privacidade)} />
         </ConsentProvider>
       </body>

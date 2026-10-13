@@ -3,6 +3,7 @@ import type { Store } from '@/lib/api'
 import { storeContactLink } from '@/lib/format'
 import { CartLink } from './cart-link'
 import { DetranBadgeIcon } from './detran-badge'
+import { SearchBar } from './search-bar'
 import {
   PackageIcon,
   WhatsAppIcon,
@@ -66,20 +67,7 @@ export function Header({ store }: { store: Store }) {
             <span className={store.logo_url ? 'brand-text sr-only' : 'brand-text'}>{store.name}</span>
           </Link>
 
-          <form action="/produtos" className="search" role="search">
-            <span className="search-icon" aria-hidden>
-              <SearchIcon />
-            </span>
-            <input
-              name="q"
-              placeholder="Buscar peça, código de fábrica ou modelo (ex.: farol sentra)"
-              aria-label="Buscar peça"
-              maxLength={80}
-            />
-            <button className="btn sm search-btn" type="submit">
-              Buscar
-            </button>
-          </form>
+          <SearchBar />
 
           <div className="header-actions">
             {wa && (
@@ -99,6 +87,7 @@ export function Header({ store }: { store: Store }) {
           {store.has_sucatas && (
             <Link href="/sucatas" className="nav-link">Veículos em Desmontagem</Link>
           )}
+          <Link href="/sobre" className="nav-link">Sobre a Loja</Link>
           {store.portal_enabled && (
             <Link href="/entrar" className="nav-portal-link">
               <UserIcon className="inline-icon" />
