@@ -127,7 +127,7 @@ export default async function SobrePage() {
 
           {wa && (
             <div style={{ marginTop: 24 }}>
-              <a href={wa} target="_blank" rel="noopener noreferrer" className="btn wa">
+              <a data-wa="contato" href={wa} target="_blank" rel="noopener noreferrer" className="btn wa">
                 <WhatsAppIcon className="wa-svg-icon" />
                 <span>Falar com Nossa Equipe no WhatsApp</span>
               </a>

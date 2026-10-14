@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getFacets, getStore, listCategories, listProducts, listSucatas } from '@/lib/api'
+import { getFacets, getGoogleReviews, getStore, listCategories, listProducts, listSucatas } from '@/lib/api'
 import { storeContactLink } from '@/lib/format'
 import { marcaPath } from '@/lib/slug'
 import { cidadeDe } from '@/lib/seo'
@@ -15,11 +15,12 @@ import { GoogleReviews } from '@/components/google-reviews'
 
 export default async function Home() {
   const store = await getStore()
-  const [categories, destaques, facets, sucatas] = await Promise.all([
+  const [categories, destaques, facets, sucatas, reviews] = await Promise.all([
     listCategories(store.slug),
     listProducts(store.slug, { limit: 8 }),
     getFacets(store.slug),
     store.has_sucatas ? listSucatas(store.slug, 1, 3) : Promise.resolve(null),
+    getGoogleReviews(store.slug),
   ])
   const wa = storeContactLink(store, store.whatsapp_message)
 
@@ -49,7 +50,7 @@ export default async function Home() {
                     <span>Ver Todas as Peças</span>
                   </Link>
                   {wa && (
-                    <a href={wa} target="_blank" rel="noopener noreferrer" className="btn wa hero-wa-btn">
+                    <a data-wa="pagina-inicial" href={wa} target="_blank" rel="noopener noreferrer" className="btn wa hero-wa-btn">
                       <WhatsAppIcon className="wa-svg-icon" />
                       <span>Consultar no WhatsApp</span>
                     </a>
@@ -177,8 +178,8 @@ export default async function Home() {
         </section>
       )}
 
-      {/* Prova Social e Avaliações Google */}
-      <GoogleReviews googleReviewsUrl={store.google_reviews_url} storeName={store.name} />
+      {/* Prova Social: avaliações REAIS do Google (some se a empresa não configurou) */}
+      <GoogleReviews data={reviews} googleReviewsUrl={store.google_reviews_url} storeName={store.name} />
 
       {/* Call to Action WhatsApp */}
       {wa && (
@@ -190,7 +191,7 @@ export default async function Home() {
                 Nossa equipe de vendas consulta o estoque físico no pátio em tempo real para você!
               </span>
             </div>
-            <a className="btn wa cta-btn" href={wa} target="_blank" rel="noopener noreferrer">
+            <a data-wa="pagina-inicial" className="btn wa cta-btn" href={wa} target="_blank" rel="noopener noreferrer">
               <WhatsAppIcon className="wa-svg-icon" />
               <span>Chamar Vendedor no WhatsApp</span>
             </a>

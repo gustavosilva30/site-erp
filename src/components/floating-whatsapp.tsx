@@ -29,6 +29,7 @@ export function FloatingWhatsApp({ whatsapp, storeName }: { whatsapp: string | n
         </div>
       )}
       <a
+        data-wa="flutuante"
         href={url}
         target="_blank"
         rel="noopener noreferrer"

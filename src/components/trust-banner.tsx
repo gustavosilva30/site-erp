@@ -40,7 +40,7 @@ export function TrustBanner({ store }: { store: Store }) {
               <strong>Dúvidas de Compatibilidade?</strong>
               <span>
                 {wa ? (
-                  <a href={wa} target="_blank" rel="noopener noreferrer" className="trust-link">
+                  <a data-wa="contato" href={wa} target="_blank" rel="noopener noreferrer" className="trust-link">
                     <span>Consultar equipe no WhatsApp</span>
                     <ArrowRightIcon className="inline-icon" />
                   </a>

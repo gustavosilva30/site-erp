@@ -71,7 +71,7 @@ export function Header({ store }: { store: Store }) {
 
           <div className="header-actions">
             {wa && (
-              <a className="btn wa sm whatsapp-header-btn" href={wa} target="_blank" rel="noopener noreferrer">
+              <a data-wa="cabecalho" className="btn wa sm whatsapp-header-btn" href={wa} target="_blank" rel="noopener noreferrer">
                 <WhatsAppIcon className="wa-svg-icon" />
                 <span className="wa-label">Vendedor</span>
               </a>

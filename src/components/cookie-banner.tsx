@@ -10,7 +10,7 @@ export function CookieBanner({ hasCookiePolicy, hasPrivacyPolicy }: { hasCookieP
   return (
     <div className="cookie-banner" role="dialog" aria-modal="false" aria-label="Aviso de cookies">
       <p>
-        Usamos cookies necessários para o carrinho funcionar. Com a sua permissão, também carregamos o mapa do Google, que pode usar cookies de terceiros.
+        Usamos cookies necessários para o carrinho funcionar. Com a sua permissão, também guardamos um código anônimo neste navegador para contar visitas e entender quais peças mais interessam (sem identificar você) e carregamos o mapa do Google, que pode usar cookies de terceiros.
         {hasCookiePolicy && <> Saiba mais na <Link href="/politicas/cookies">política de cookies</Link>.</>}
         {!hasCookiePolicy && hasPrivacyPolicy && <> Saiba mais na <Link href="/politicas/privacidade">política de privacidade</Link>.</>}
       </p>

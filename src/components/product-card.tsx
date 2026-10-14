@@ -37,7 +37,7 @@ export function ProductCardView({
   const precoPix = descPix && !consulta ? product.price * (1 - descPix / 100) : null
 
   return (
-    <div className="card product-card-v2">
+    <div className="card product-card-v2" data-product-id={product.id}>
       <Link href={pecaPath(product)} className="card-top">
         <div className="ph">
           {product.photo ? (
@@ -103,7 +103,7 @@ export function ProductCardView({
       <div className="card-act">
         {consulta ? (
           link ? (
-            <a className="btn sm wa full-w" href={link} target="_blank" rel="noopener noreferrer">
+            <a data-wa="card" className="btn sm wa full-w" href={link} target="_blank" rel="noopener noreferrer">
               <WhatsAppIcon className="wa-svg-icon" />
               <span>Consultar WhatsApp</span>
             </a>

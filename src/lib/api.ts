@@ -123,6 +123,26 @@ export interface SitemapData {
   sucatas: { id: string; title: string; updated_at: string | null }[]
 }
 
+/** Avaliacoes REAIS do perfil da empresa no Google (via ERP, que guarda a resposta da Places API). */
+export interface GoogleReview {
+  author: string
+  author_url: string | null
+  author_photo: string | null
+  rating: number
+  text: string
+  relative_time: string
+  publish_time: string | null
+}
+
+export interface GoogleReviewsData {
+  rating: number | null
+  total: number
+  maps_url: string | null
+  reviews_url: string | null
+  reviews: GoogleReview[]
+  fetched_at: string
+}
+
 async function get<T>(path: string, revalidate = 60): Promise<T | null> {
   const res = await fetch(`${ERP}/api/public/store/${path}`, { next: { revalidate } })
   if (res.status === 404) return null
@@ -196,4 +216,13 @@ export async function getSitemapData(slug: string): Promise<SitemapData> {
 
 export async function getPolicy(slug: string, key: string) {
   return get<{ key: string; title: string; text: string }>(`${encodeURIComponent(slug)}/policies/${encodeURIComponent(key)}`, 60)
+}
+
+/** Avaliacoes do Google da loja; null se a empresa nao configurou (ou o ERP falhou): o site nunca inventa avaliacao. */
+export async function getGoogleReviews(slug: string): Promise<GoogleReviewsData | null> {
+  try {
+    return await get<GoogleReviewsData>(`${encodeURIComponent(slug)}/reviews`, 3600)
+  } catch {
+    return null
+  }
 }

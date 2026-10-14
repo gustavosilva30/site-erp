@@ -8,6 +8,7 @@ import { ConsentProvider } from '@/lib/consent'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { CookieBanner } from '@/components/cookie-banner'
+import { Analytics } from '@/components/analytics'
 import { FloatingWhatsApp } from '@/components/floating-whatsapp'
 import { MobileBottomNav } from '@/components/mobile-bottom-nav'
 import { Plus_Jakarta_Sans } from 'next/font/google'
@@ -81,6 +82,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             <MobileBottomNav whatsapp={store.whatsapp} storeName={store.name} />
           </CartProvider>
           <FloatingWhatsApp whatsapp={store.whatsapp} storeName={store.name} />
+          <Analytics />
           <CookieBanner hasCookiePolicy={Boolean(store.policies?.cookies)} hasPrivacyPolicy={Boolean(store.policies?.privacidade)} />
         </ConsentProvider>
       </body>

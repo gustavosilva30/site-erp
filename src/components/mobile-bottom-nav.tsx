@@ -46,6 +46,7 @@ export function MobileBottomNav({ whatsapp, storeName }: { whatsapp: string | nu
 
       {waUrl && (
         <a
+          data-wa="menu-mobile"
           href={waUrl}
           target="_blank"
           rel="noopener noreferrer"

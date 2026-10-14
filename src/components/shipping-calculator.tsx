@@ -128,6 +128,7 @@ export function ShippingCalculator({ productTitle, sku, whatsapp }: { productTit
 
           {waLink && (
             <a
+              data-wa="frete"
               href={waLink}
               target="_blank"
               rel="noopener noreferrer"

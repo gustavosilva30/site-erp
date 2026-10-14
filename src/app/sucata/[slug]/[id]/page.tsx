@@ -57,7 +57,7 @@ export default async function Sucata({ params }: Props) {
           <p className="muted">{s.parts_count > 0 ? `${s.parts_count} ${s.parts_count === 1 ? 'peça deste veículo está' : 'peças deste veículo estão'} em estoque.` : 'Sucata ainda montada no pátio.'}</p>
           {wa && (
             <div className="row">
-              <a className="btn wa" href={wa} target="_blank" rel="noopener noreferrer">
+              <a data-wa="sucata" className="btn wa" href={wa} target="_blank" rel="noopener noreferrer">
                 <WhatsAppIcon className="wa-svg-icon" />
                 <span>Perguntar das peças no WhatsApp</span>
               </a>
@@ -82,7 +82,7 @@ export default async function Sucata({ params }: Props) {
             <span className="stickybar-label">Veículo no Pátio</span>
             <span className="price" style={{ fontSize: '.95rem' }}>{s.parts_count} {s.parts_count === 1 ? 'peça' : 'peças'}</span>
           </div>
-          <a className="btn wa stickybar-btn" href={wa} target="_blank" rel="noopener noreferrer">
+          <a data-wa="sucata" className="btn wa stickybar-btn" href={wa} target="_blank" rel="noopener noreferrer">
             <WhatsAppIcon className="wa-svg-icon" />
             <span>Chamar no WhatsApp</span>
           </a>

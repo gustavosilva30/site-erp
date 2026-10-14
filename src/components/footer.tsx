@@ -69,7 +69,7 @@ export function Footer({ store }: { store: Store }) {
             <ul className="foot-list">
               {wa && (
                 <li>
-                  <a href={wa} target="_blank" rel="noopener noreferrer" className="foot-wa">
+                  <a data-wa="rodape" href={wa} target="_blank" rel="noopener noreferrer" className="foot-wa">
                     <WhatsAppIcon className="foot-icon text-emerald-400" />
                     <span>WhatsApp / Vendas</span>
                   </a>

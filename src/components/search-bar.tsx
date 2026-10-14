@@ -7,6 +7,7 @@ import { SearchIcon, ArrowRightIcon } from './icons'
 import { money } from '@/lib/format'
 import { pecaPath } from '@/lib/slug'
 import type { ProductCard } from '@/lib/api'
+import { track } from '@/lib/track'
 
 export function SearchBar() {
   const router = useRouter()
@@ -124,7 +125,7 @@ export function SearchBar() {
                     key={p.id}
                     href={pecaPath(p)}
                     className="search-result-item"
-                    onClick={() => setOpen(false)}
+                    onClick={() => { setOpen(false); track({ type: 'search', path: '/produtos', label: query.trim().slice(0, 80), value: results.length }) }}
                   >
                     <div className="search-item-photo">
                       {p.photo ? (

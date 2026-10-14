@@ -6,6 +6,7 @@ import { CarFilter } from '@/components/car-filter'
 import { Pager } from '@/components/listing'
 import { ProductCardView } from '@/components/product-card'
 import { ProductSidebar } from '@/components/product-sidebar'
+import { TrackSearch } from '@/components/analytics'
 
 type Raw = Record<string, string | string[] | undefined>
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v)
@@ -92,6 +93,7 @@ export default async function Produtos({ searchParams }: { searchParams: Promise
 
   return (
     <main className="wrap sec">
+      <TrackSearch label={q || carro} total={result.total} page={page} />
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: 16 }}>
         <h1 className="h2" style={{ margin: 0 }}>
           {tituloPagina} <span className="muted small">({result.total} {result.total === 1 ? 'peça encontrada' : 'peças encontradas'})</span>

@@ -12,6 +12,7 @@ export function AddToCart({ product, small = false }: { product: ProductCard; sm
   return (
     <button
       type="button"
+      data-product-id={product.id}
       className={`btn add-to-cart-btn ${added ? 'added' : ''}${small ? ' sm full-w' : ''}`}
       onClick={() => {
         cart?.add({ id: product.id, title: product.title, price: product.price, photo: product.photo, sku: product.sku })

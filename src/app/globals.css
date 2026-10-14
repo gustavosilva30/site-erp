@@ -1818,6 +1818,42 @@ button, input, select { font: inherit; }
 .author-name { display: block; font-size: 13.5px; color: var(--ink); font-weight: 700; }
 .author-role { font-size: 12px; color: var(--muted); display: inline-flex; align-items: center; gap: 4px; }
 
+/* Avaliações reais do Google: nota geral, atribuição e convite quando ainda não há avaliações carregadas */
+.google-g-logo { width: 14px; height: 14px; flex-shrink: 0; }
+.review-star-icon.is-empty { color: #e2e8f0; }
+.review-text { display: -webkit-box; -webkit-line-clamp: 7; line-clamp: 7; -webkit-box-orient: vertical; overflow: hidden; }
+.author-avatar--img { object-fit: cover; background: #e2e8f0; }
+.author-link { text-decoration: none; }
+.author-link:hover { text-decoration: underline; }
+.reviews-summary { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+.reviews-summary-score { font-size: 28px; line-height: 1; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; }
+.rating-stars { position: relative; display: inline-block; line-height: 0; }
+.rating-stars-base, .rating-stars-fill { display: inline-flex; gap: 3px; white-space: nowrap; }
+.rating-stars-base { color: #e2e8f0; }
+.rating-stars-fill { position: absolute; inset: 0 auto 0 0; overflow: hidden; color: #f59e0b; }
+.rating-star { width: 20px; height: 20px; flex-shrink: 0; }
+.reviews-source { font-size: 11.5px; margin: 16px 0 0; text-align: right; }
+.reviews-section--compact { padding: 28px 0; }
+.reviews-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  box-shadow: var(--shadow-xs);
+}
+.reviews-cta-text { display: flex; align-items: center; gap: 14px; }
+.reviews-cta-text .google-g-logo { width: 32px; height: 32px; }
+.reviews-cta-title { font-size: 17px; font-weight: 800; margin: 0 0 2px; color: var(--ink); }
+@media (max-width: 640px) {
+  .reviews-source { text-align: left; }
+  .reviews-cta .reviews-google-link { width: 100%; justify-content: center; }
+}
+
 /* ---- Página Sobre a Loja (/sobre) ---- */
 .sobre-hero { text-align: center; max-width: 800px; margin: 0 auto 40px; padding: 20px 0; }
 .sobre-hero-badge {

@@ -106,7 +106,7 @@ export default async function Peca({ params }: Props) {
           <span className="price">{consulta ? 'Consulte a loja' : money(p.price)}</span>
           <div className="row">
             {!consulta && <AddToCart product={p} />}
-            {wa && <a className="btn wa" href={wa} target="_blank" rel="noopener noreferrer">{consulta ? 'Consultar preço no WhatsApp' : 'Perguntar no WhatsApp'}</a>}
+            {wa && <a data-wa="produto" className="btn wa" href={wa} target="_blank" rel="noopener noreferrer">{consulta ? 'Consultar preço no WhatsApp' : 'Perguntar no WhatsApp'}</a>}
           </div>
 
           <ul className="trust" aria-label="Informações da loja">
@@ -193,7 +193,7 @@ export default async function Peca({ params }: Props) {
             <span className="stickybar-label">Total da Peça</span>
             <span className="price">{consulta ? 'Sob consulta' : money(p.price)}</span>
           </div>
-          <a className="btn wa stickybar-btn" href={wa} target="_blank" rel="noopener noreferrer">
+          <a data-wa="produto" className="btn wa stickybar-btn" href={wa} target="_blank" rel="noopener noreferrer">
             <WhatsAppIcon className="wa-svg-icon" />
             <span>{consulta ? 'Consultar Preço' : 'Chamar no WhatsApp'}</span>
           </a>

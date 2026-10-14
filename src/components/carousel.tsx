@@ -51,7 +51,7 @@ export function Carousel({ banners }: { banners: Banner[] }) {
           const img = <img src={b.image_url} alt={b.alt} loading={i === 0 ? 'eager' : 'lazy'} draggable={false} />
           const externo = b.link_url && /^https?:\/\//i.test(b.link_url)
           return (
-            <div className="carousel-slide" key={b.id} role="group" aria-roledescription="slide" aria-label={`${i + 1} de ${total}`}>
+            <div className="carousel-slide" key={b.id} data-banner={b.alt} role="group" aria-roledescription="slide" aria-label={`${i + 1} de ${total}`}>
               {b.link_url
                 ? externo
                   ? <a href={b.link_url} target="_blank" rel="noopener noreferrer">{img}</a>

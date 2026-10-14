@@ -3,8 +3,8 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 
 /**
- * Consentimento de cookies (LGPD). Os recursos necessários (carrinho e esta própria escolha) funcionam sempre; os de terceiros
- * (hoje, o mapa do Google) só carregam depois que o visitante permite. A escolha fica salva no navegador.
+ * Consentimento de cookies (LGPD). Os recursos necessários (carrinho e esta própria escolha) funcionam sempre; os opcionais
+ * (o mapa do Google e o código anônimo das estatísticas de visita, ver lib/track.ts) só entram depois que o visitante permite. A escolha fica salva no navegador.
  */
 interface Consent {
   /** Já escolheu? Enquanto não, o aviso aparece. */

@@ -126,7 +126,7 @@ export function CartView({ storeName, whatsapp }: { storeName: string; whatsapp:
 
             <div className="summary-checkout-act">
               {link ? (
-                <a className="btn wa full-w cart-whatsapp-checkout" href={link} target="_blank" rel="noopener noreferrer">
+                <a data-wa="carrinho" className="btn wa full-w cart-whatsapp-checkout" href={link} target="_blank" rel="noopener noreferrer">
                   <WhatsAppIcon className="wa-svg-icon" />
                   <span>Finalizar pelo WhatsApp</span>
                 </a>
